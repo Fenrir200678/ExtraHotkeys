@@ -25,6 +25,10 @@ namespace ExtraHotkeys
         [SettingsUISection(kKeybindingGroup)]
         public ProxyBinding OpenRoadKeyBinding { get; set; }
 
+        [SettingsUIKeyboardBinding(BindingKeyboard.E, nameof(OpenZoningBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenZoningBinding { get; set; }
+
         [SettingsUISection(kKeybindingGroup)]
         public bool ResetBindings
         {

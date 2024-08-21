@@ -13,11 +13,12 @@ namespace ExtraHotkeys
         private InputManager inputManager;
         private PrefabSystem m_PrefabSystem;
         private GameScreenUISystem m_GameScreenUISystem;
+        //private View _uiView;
 
         // Proxy actions for hotkey bindings
         private ProxyAction _openRoadsBinding;
+        private ProxyAction _openZoningBinding;
 
-        //private View _uiView;
 
         public override GameMode gameMode
         {
@@ -35,10 +36,7 @@ namespace ExtraHotkeys
                 m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
                 m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
 
-                // Hotkey bindings
-                _openRoadsBinding = Mod.ModSettings.GetAction(nameof(ModSettings.OpenRoadKeyBinding));
-                _openRoadsBinding.shouldBeEnabled = true;
-
+                RegisterKeyBindings();
             }
             catch (System.Exception ex)
             {
@@ -52,14 +50,35 @@ namespace ExtraHotkeys
 
             try
             {
-                if(_openRoadsBinding.WasPerformedThisFrame())
-                {
-                    LogUtil.Info("Open road tools binding test");
-                }
+                CheckHotKeyPressed();
             }
             catch (System.Exception ex)
             {
                 LogUtil.Exception(ex);
+            }
+        }
+
+        private void RegisterKeyBindings()
+        {
+            // Hotkey bindings
+            _openRoadsBinding = Mod.ModSettings.GetAction(nameof(ModSettings.OpenRoadKeyBinding));
+            _openRoadsBinding.shouldBeEnabled = true;
+
+            _openZoningBinding = Mod.ModSettings.GetAction(nameof(ModSettings.OpenZoningBinding));
+            _openZoningBinding.shouldBeEnabled = true;
+
+        }
+
+        private void CheckHotKeyPressed()
+        {
+            if (_openRoadsBinding.WasPerformedThisFrame())
+            {
+                LogUtil.Info("Open road tools binding test");
+            }
+
+            if (_openZoningBinding.WasPerformedThisFrame())
+            {
+                LogUtil.Info("Open zoning tools binding test");
             }
         }
     }

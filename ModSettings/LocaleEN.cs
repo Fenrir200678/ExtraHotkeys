@@ -21,6 +21,9 @@ namespace ExtraHotkeys
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.OpenRoadKeyBinding)), "Open road tools" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenRoadKeyBinding)), $"Keyboard binding for opening road tools" },
 
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.OpenZoningBinding)), "Open zoning tools" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenZoningBinding)), $"Keyboard binding for opening zoning tools" },
+
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ModVersion)), $"{ModAssemblyInfo.Title}, © 2024 by Fenrir" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ModVersion)), $"V{ModAssemblyInfo.Version}" },
 
