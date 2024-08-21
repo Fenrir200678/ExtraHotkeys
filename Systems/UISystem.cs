@@ -1,24 +1,25 @@
 ﻿using cohtml.Net;
-using Game;
 using Game.Input;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
 using Game.UI.InGame;
 using System;
+using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Entities;
 
 namespace ExtraHotkeys
 {
     public partial class UISystem : UISystemBase
     {
         private InputManager inputManager;
+        private View _uiView;
         private PrefabSystem m_PrefabSystem;
         private GameScreenUISystem m_GameScreenUISystem;
-        private View _uiView;
 
-        // Proxy actions for hotkey bindings
-        private ProxyAction _openRoadsBinding;
-        private ProxyAction _openZoningBinding;
+        // List to store hotkey bindings
+        private List<(ProxyAction binding, string toolName)> hotkeyBindings;
 
         protected override void OnCreate()
         {
@@ -53,8 +54,10 @@ namespace ExtraHotkeys
         private void InitializeSystems()
         {
             inputManager = GameManager.instance.inputManager;
+            _uiView = GameManager.instance.userInterface.view.View;
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
+            hotkeyBindings = new List<(ProxyAction, string)>();
         }
 
         private ProxyAction CreateAndEnableBinding(string settingName)
@@ -66,17 +69,15 @@ namespace ExtraHotkeys
 
         private void RegisterKeyBindings()
         {
-            _openRoadsBinding = CreateAndEnableBinding(nameof(ModSettings.OpenRoadKeyBinding));
-            _openZoningBinding = CreateAndEnableBinding(nameof(ModSettings.OpenZoningBinding));
-
+            AddHotkeyBinding(nameof(ModSettings.OpenRoadKeyBinding), "Roads");
+            AddHotkeyBinding(nameof(ModSettings.OpenZoningBinding), "Zones");
+            // Add more bindings here as needed
         }
 
-        private void CheckBinding(ProxyAction binding, Action callback)
+        private void AddHotkeyBinding(string settingName, string toolName)
         {
-            if (binding.WasPerformedThisFrame())
-            {
-                callback.DynamicInvoke();
-            }
+            var binding = CreateAndEnableBinding(settingName);
+            hotkeyBindings.Add((binding, toolName));
         }
 
         private void CheckHotKeysPressed()
@@ -84,13 +85,44 @@ namespace ExtraHotkeys
             if (!inputManager.mouseOnScreen)
                 return;
 
-            CheckBinding(_openRoadsBinding, () => TestLog("Open road tools binding test"));
-            CheckBinding(_openZoningBinding, () => TestLog("Open zoning tools binding test"));
+            foreach (var (binding, toolName) in hotkeyBindings)
+            {
+                if (binding.WasPerformedThisFrame())
+                {
+                    OpenGameTool(toolName);
+                }
+            }
         }
 
-        private void TestLog(string message)
+        private void OpenGameTool(string toolName)
         {
-            LogUtil.Info(message);
+            LogUtil.Info($"Opening {toolName} tool");
+            Entity menuEntity = GetMenuEntity(toolName);
+            var menuObject = new
+            {
+                __Type = menuEntity.GetType().ToString(),
+                index = menuEntity.Index,
+                version = menuEntity.Version
+            };
+            _uiView.TriggerEvent("toolbar.selectAssetMenu", menuObject);
+        }
+
+        private Entity GetMenuEntity(string toolName)
+        {
+            EntityQuery assetMenuData = GetEntityQuery(ComponentType.ReadOnly<UIAssetMenuData>());
+            NativeArray<Entity> menuEntities = assetMenuData.ToEntityArray(Allocator.Temp);
+            Entity menuEntity = Entity.Null;
+            foreach (Entity entity in menuEntities)
+            {
+                UIAssetMenuPrefab assetMenuPrefab = m_PrefabSystem.GetPrefab<UIAssetMenuPrefab>(entity);
+                if (assetMenuPrefab.name == toolName)
+                {
+                    menuEntity = entity;
+                    break;
+                }
+            }
+            menuEntities.Dispose();
+            return menuEntity;
         }
     }
 }
