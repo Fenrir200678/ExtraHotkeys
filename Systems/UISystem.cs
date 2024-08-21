@@ -117,8 +117,7 @@ namespace ExtraHotkeys
                 UIAssetMenuPrefab assetMenuPrefab = m_PrefabSystem.GetPrefab<UIAssetMenuPrefab>(entity);
                 if (assetMenuPrefab.name == toolName)
                 {
-                    LogUtil.Info($"Current prefab: {assetMenuPrefab.name}");
-                    LogUtil.Info($"Active?: {assetMenuPrefab.active}");
+                    //LogUtil.Info($"Found Prefab: {assetMenuPrefab.name}");
                     menuEntity = entity;
                     break;
                 }

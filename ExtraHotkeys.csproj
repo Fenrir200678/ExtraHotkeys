@@ -12,6 +12,8 @@
 		<Description>This mod adds extra hotkeys to the game that should have been there by default.</Description>
 		<Copyright>Copyright © 2024</Copyright>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<Authors>Fenrir</Authors>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<!--Imports must be after PropertyGroup block-->
@@ -100,6 +102,12 @@
 	<Import Project="ModAssemblyInfo\ModAssemblyInfo.csproj" />
 	<ItemGroup>
 		<None Include="ModAssemblyInfo\ModAssemblyInfo.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
