@@ -1,10 +1,11 @@
-﻿//using cohtml.Net;
+﻿using cohtml.Net;
 using Game;
 using Game.Input;
 using Game.Prefabs;
 using Game.SceneFlow;
 using Game.UI;
 using Game.UI.InGame;
+using System;
 
 namespace ExtraHotkeys
 {
@@ -13,17 +14,11 @@ namespace ExtraHotkeys
         private InputManager inputManager;
         private PrefabSystem m_PrefabSystem;
         private GameScreenUISystem m_GameScreenUISystem;
-        //private View _uiView;
+        private View _uiView;
 
         // Proxy actions for hotkey bindings
         private ProxyAction _openRoadsBinding;
         private ProxyAction _openZoningBinding;
-
-
-        public override GameMode gameMode
-        {
-            get { return GameMode.Game; }
-        }
 
         protected override void OnCreate()
         {
@@ -32,13 +27,10 @@ namespace ExtraHotkeys
 
             try
             {
-                inputManager = GameManager.instance.inputManager;
-                m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
-                m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
-
+                InitializeSystems();
                 RegisterKeyBindings();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 LogUtil.Exception(ex);
             }
@@ -50,36 +42,55 @@ namespace ExtraHotkeys
 
             try
             {
-                CheckHotKeyPressed();
+                CheckHotKeysPressed();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 LogUtil.Exception(ex);
             }
         }
 
+        private void InitializeSystems()
+        {
+            inputManager = GameManager.instance.inputManager;
+            m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
+            m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
+        }
+
+        private ProxyAction CreateAndEnableBinding(string settingName)
+        {
+            var binding = Mod.ModSettings.GetAction(settingName);
+            binding.shouldBeEnabled = true;
+            return binding;
+        }
+
         private void RegisterKeyBindings()
         {
-            // Hotkey bindings
-            _openRoadsBinding = Mod.ModSettings.GetAction(nameof(ModSettings.OpenRoadKeyBinding));
-            _openRoadsBinding.shouldBeEnabled = true;
-
-            _openZoningBinding = Mod.ModSettings.GetAction(nameof(ModSettings.OpenZoningBinding));
-            _openZoningBinding.shouldBeEnabled = true;
+            _openRoadsBinding = CreateAndEnableBinding(nameof(ModSettings.OpenRoadKeyBinding));
+            _openZoningBinding = CreateAndEnableBinding(nameof(ModSettings.OpenZoningBinding));
 
         }
 
-        private void CheckHotKeyPressed()
+        private void CheckBinding(ProxyAction binding, Action callback)
         {
-            if (_openRoadsBinding.WasPerformedThisFrame())
+            if (binding.WasPerformedThisFrame())
             {
-                LogUtil.Info("Open road tools binding test");
+                callback.DynamicInvoke();
             }
+        }
 
-            if (_openZoningBinding.WasPerformedThisFrame())
-            {
-                LogUtil.Info("Open zoning tools binding test");
-            }
+        private void CheckHotKeysPressed()
+        {
+            if (!inputManager.mouseOnScreen)
+                return;
+
+            CheckBinding(_openRoadsBinding, () => TestLog("Open road tools binding test"));
+            CheckBinding(_openZoningBinding, () => TestLog("Open zoning tools binding test"));
+        }
+
+        private void TestLog(string message)
+        {
+            LogUtil.Info(message);
         }
     }
 }
