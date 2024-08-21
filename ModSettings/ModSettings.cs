@@ -11,24 +11,90 @@ namespace ExtraHotkeys
 
     public class ModSettings : ModSetting
     {
-        public const string kKeybindingGroup = "KeyBindings";
+        public const string kKeybindingGroup = "Keybindings";
         public const string kAbout = "About";
 
-        // key binding action names
-        public const string aOpenRoad = "Open road tools";
+        public ModSettings(IMod mod) : base(mod) { }
 
-        public ModSettings(IMod mod) : base(mod)
-        {
-        }
-
-        [SettingsUIKeyboardBinding(BindingKeyboard.R, nameof(OpenRoadKeyBinding))]
+        // Keybindings
+        // Zones
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenZonesKeyBinding))]
         [SettingsUISection(kKeybindingGroup)]
-        public ProxyBinding OpenRoadKeyBinding { get; set; }
+        public ProxyBinding OpenZonesKeyBinding { get; set; }
 
-        [SettingsUIKeyboardBinding(BindingKeyboard.E, nameof(OpenZoningBinding))]
+        // Areas
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenAreasKeyBinding))]
         [SettingsUISection(kKeybindingGroup)]
-        public ProxyBinding OpenZoningBinding { get; set; }
+        public ProxyBinding OpenAreasKeyBinding { get; set; }
 
+        // Signatures
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenSignaturesKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenSignaturesKeyBinding { get; set; }
+
+
+        // Roads
+        [SettingsUIKeyboardBinding(BindingKeyboard.R, nameof(OpenRoadsKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenRoadsKeyBinding { get; set; }
+
+        // Electricity
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenElectricityKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenElectricityKeyBinding { get; set; }
+
+        // WaterAndSewage
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenWaterAndSewageKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenWaterAndSewageKeyBinding { get; set; }
+
+        // HealthAndDeathcare
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenHealthAndDeathcareKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenHealthAndDeathcareKeyBinding { get; set; }
+
+        // GarbageManagement
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenGarbageManagementKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenGarbageManagementKeyBinding { get; set; }
+
+        // EducationAndResearch
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenEducationAndResearchKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenEducationAndResearchKeyBinding { get; set; }
+
+        // FireAndRescue
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenFireAndRescueKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenFireAndRescueKeyBinding { get; set; }
+
+        // PoliceAndAdministration
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenPoliceAndAdministrationKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenPoliceAndAdministrationKeyBinding { get; set; }
+
+        // Transportation
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenTransportationKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenTransportationKeyBinding { get; set; }
+
+        // ParksAndRecreation
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenParksAndRecreationKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenParksAndRecreationKeyBinding { get; set; }
+
+        // Communications
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenCommunicationsKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenCommunicationsKeyBinding { get; set; }
+
+        // Landscaping
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenLandscapingKeyBinding))]
+        [SettingsUISection(kKeybindingGroup)]
+        public ProxyBinding OpenLandscapingKeyBinding { get; set; }
+
+
+        // Reset key bindings
         [SettingsUISection(kKeybindingGroup)]
         public bool ResetBindings
         {
@@ -39,12 +105,13 @@ namespace ExtraHotkeys
             }
         }
 
+        // About mod
+        [SettingsUISection(kAbout)]
+        public string ModVersion { get { return $"V{ModAssemblyInfo.Version}"; } }
+
         public override void SetDefaults()
         {
             throw new System.NotImplementedException();
         }
-
-        [SettingsUISection(kAbout)]
-        public string ModVersion { get { return $"V{ModAssemblyInfo.Version}"; } }
     }
 }

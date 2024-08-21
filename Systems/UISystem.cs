@@ -19,7 +19,7 @@ namespace ExtraHotkeys
         private GameScreenUISystem m_GameScreenUISystem;
 
         // List to store hotkey bindings
-        private List<(ProxyAction binding, string toolName)> hotkeyBindings;
+        private List<(ProxyAction binding, string toolName)> _hotkeyBindings;
 
         protected override void OnCreate()
         {
@@ -29,7 +29,7 @@ namespace ExtraHotkeys
             try
             {
                 InitializeSystems();
-                RegisterKeyBindings();
+                AddKeybindings();
             }
             catch (Exception ex)
             {
@@ -43,7 +43,7 @@ namespace ExtraHotkeys
 
             try
             {
-                CheckHotKeysPressed();
+                CheckHotKeys();
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace ExtraHotkeys
             _uiView = GameManager.instance.userInterface.view.View;
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
-            hotkeyBindings = new List<(ProxyAction, string)>();
+            _hotkeyBindings = new List<(ProxyAction, string)>();
         }
 
         private ProxyAction CreateAndEnableBinding(string settingName)
@@ -67,62 +67,75 @@ namespace ExtraHotkeys
             return binding;
         }
 
-        private void RegisterKeyBindings()
+        private void AddKeybindings()
         {
-            AddHotkeyBinding(nameof(ModSettings.OpenRoadKeyBinding), "Roads");
-            AddHotkeyBinding(nameof(ModSettings.OpenZoningBinding), "Zones");
-            // Add more bindings here as needed
+            RegisterKeybinding(nameof(ModSettings.OpenZonesKeyBinding), "Zones");
+            RegisterKeybinding(nameof(ModSettings.OpenAreasKeyBinding), "Areas");
+            RegisterKeybinding(nameof(ModSettings.OpenSignaturesKeyBinding), "Signatures");
+            RegisterKeybinding(nameof(ModSettings.OpenRoadsKeyBinding), "Roads");
+            RegisterKeybinding(nameof(ModSettings.OpenElectricityKeyBinding), "Electricity");
+            RegisterKeybinding(nameof(ModSettings.OpenWaterAndSewageKeyBinding), "Water & Sewage");
+            RegisterKeybinding(nameof(ModSettings.OpenHealthAndDeathcareKeyBinding), "Health & Deathcare");
+            RegisterKeybinding(nameof(ModSettings.OpenGarbageManagementKeyBinding), "Garbage Management");
+            RegisterKeybinding(nameof(ModSettings.OpenEducationAndResearchKeyBinding), "Education & Research");
+            RegisterKeybinding(nameof(ModSettings.OpenFireAndRescueKeyBinding), "Fire & Rescue");
+            RegisterKeybinding(nameof(ModSettings.OpenPoliceAndAdministrationKeyBinding), "Police & Administration");
+            RegisterKeybinding(nameof(ModSettings.OpenTransportationKeyBinding), "Transportation");
+            RegisterKeybinding(nameof(ModSettings.OpenParksAndRecreationKeyBinding), "Parks & Recreation");
+            RegisterKeybinding(nameof(ModSettings.OpenCommunicationsKeyBinding), "Communications");
+            RegisterKeybinding(nameof(ModSettings.OpenLandscapingKeyBinding), "Landscaping");
         }
 
-        private void AddHotkeyBinding(string settingName, string toolName)
+        private void RegisterKeybinding(string settingName, string toolName)
         {
             var binding = CreateAndEnableBinding(settingName);
-            hotkeyBindings.Add((binding, toolName));
+            _hotkeyBindings.Add((binding, toolName));
         }
 
-        private void CheckHotKeysPressed()
+        private void CheckHotKeys()
         {
             if (!inputManager.mouseOnScreen)
                 return;
 
-            foreach (var (binding, toolName) in hotkeyBindings)
+            foreach (var (binding, toolName) in _hotkeyBindings)
             {
                 if (binding.WasPerformedThisFrame())
                 {
-                    OpenGameTool(toolName);
+                    _uiView.TriggerEvent("toolbar.selectAssetMenu", GetEventObject(toolName));
                 }
             }
         }
 
-        private void OpenGameTool(string toolName)
-        {
-            LogUtil.Info($"Opening {toolName} tool");
-            Entity menuEntity = GetMenuEntity(toolName);
-            var menuObject = new
-            {
-                __Type = menuEntity.GetType().ToString(),
-                index = menuEntity.Index,
-                version = menuEntity.Version
-            };
-            _uiView.TriggerEvent("toolbar.selectAssetMenu", menuObject);
-        }
-
-        private Entity GetMenuEntity(string toolName)
+        private object GetEventObject(string toolName)
         {
             EntityQuery assetMenuData = GetEntityQuery(ComponentType.ReadOnly<UIAssetMenuData>());
             NativeArray<Entity> menuEntities = assetMenuData.ToEntityArray(Allocator.Temp);
             Entity menuEntity = Entity.Null;
+
             foreach (Entity entity in menuEntities)
             {
                 UIAssetMenuPrefab assetMenuPrefab = m_PrefabSystem.GetPrefab<UIAssetMenuPrefab>(entity);
                 if (assetMenuPrefab.name == toolName)
                 {
+                    LogUtil.Info($"Current prefab: {assetMenuPrefab.name}");
+                    LogUtil.Info($"Active?: {assetMenuPrefab.active}");
                     menuEntity = entity;
                     break;
                 }
             }
             menuEntities.Dispose();
-            return menuEntity;
+
+            if (menuEntity == Entity.Null)
+            {
+                LogUtil.Exception(new Exception($"Could not find menu entity for {toolName}"));
+            }
+
+            return new
+            {
+                __Type = menuEntity.GetType().ToString(),
+                index = menuEntity.Index,
+                version = menuEntity.Version
+            }; ;
         }
     }
 }
