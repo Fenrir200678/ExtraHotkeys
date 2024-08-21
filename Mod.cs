@@ -7,7 +7,7 @@ namespace ExtraHotkeys
 {
     public class Mod : IMod
     {
-        private ModSettings ModSettings;
+        public static ModSettings ModSettings;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
@@ -18,6 +18,8 @@ namespace ExtraHotkeys
 
             ModSettings = new ModSettings(this);
             ModSettings.RegisterInOptionsUI();
+
+
             ModSettings.RegisterKeyBindings();
             AssetDatabase.global.LoadSettings(nameof(ExtraHotkeys), ModSettings, new ModSettings(this));
             ModSettings.ApplyAndSave();

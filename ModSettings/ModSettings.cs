@@ -21,7 +21,7 @@ namespace ExtraHotkeys
         {
         }
 
-        [SettingsUIKeyboardBinding(BindingKeyboard.R, aOpenRoad)]
+        [SettingsUIKeyboardBinding(BindingKeyboard.R, nameof(OpenRoadKeyBinding))]
         [SettingsUISection(kKeybindingGroup)]
         public ProxyBinding OpenRoadKeyBinding { get; set; }
 
