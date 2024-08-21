@@ -81,21 +81,7 @@
 	<ItemGroup>
 		<None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Update="Properties\Resources.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
+		<None Include="Properties\PublishConfiguration.csproj" />
 	</ItemGroup>
 
 	<!-- Automatically build ModAssemblyInfo.cs file. -->
@@ -110,4 +96,9 @@
 	  </None>
 	</ItemGroup>
 
+	<!-- Automatically build PublishConfiguration.xml file. -->
+	<Import Project="Properties\PublishConfiguration.csproj" />
+	<ItemGroup>
+		<None Include="Properties\PublishConfiguration.csproj" />
+	</ItemGroup>
 </Project>
