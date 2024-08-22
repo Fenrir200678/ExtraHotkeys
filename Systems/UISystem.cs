@@ -20,6 +20,7 @@ namespace ExtraHotkeys
         private GameScreenUISystem m_GameScreenUISystem;
         private ToolSystem m_ToolSystem;
         private NetToolSystem m_NetToolSystem;
+        private ZoneToolSystem m_ZoneToolSystem;
         private ModSettings ModSettings => Mod.ModSettings;
 
         // List for open tool windows bindings
@@ -54,8 +55,8 @@ namespace ExtraHotkeys
                     if (!inputManager.mouseOnScreen)
                         return;
 
-                    CheckForOpenToolWindowsHotkeys();
-                    CheckForToolModeHotkeys();
+                    OnOpenToolWindowHotkeyPress();
+                    OnToolModeHotkeyPress();
                 }
             }
             catch (Exception ex)
@@ -73,6 +74,7 @@ namespace ExtraHotkeys
             m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_NetToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
+            m_ZoneToolSystem = World.GetOrCreateSystemManaged<ZoneToolSystem>();
 
             _openToolWindowsBindings = new List<(ProxyAction, string)>();
             _toolModeBindings = new List<(ProxyAction, string)>();
@@ -102,12 +104,12 @@ namespace ExtraHotkeys
 
         private void AddSetToolModeKeybindings()
         {
-            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeStraightKeybinding), "Straight");
-            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeSimpleCurveKeybinding), "SimpleCurve");
-            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeComplexCurveKeybinding), "ComplexCurve");
-            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeContinuousKeybinding), "Continuous");
-            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeGridKeybinding), "Grid");
-            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeReplaceKeybinding), "Replace");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolMode1_Keybinding), "Straight|FloodFill");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolMode2_Keybinding), "SimpleCurve|Marquee");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolMode3_Keybinding), "ComplexCurve|Paint");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolMode4_Keybinding), "Continuous");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolMode5_Keybinding), "Grid");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolMode6_Keybinding), "Replace");
         }
 
         private void RegisterOpenToolsKeybinding(string settingName, string toolName)
@@ -129,7 +131,7 @@ namespace ExtraHotkeys
             return binding;
         }
 
-        private void CheckForOpenToolWindowsHotkeys()
+        private void OnOpenToolWindowHotkeyPress()
         {
             foreach (var (binding, toolName) in _openToolWindowsBindings)
             {
@@ -140,16 +142,44 @@ namespace ExtraHotkeys
             }
         }
 
-        private void CheckForToolModeHotkeys()
+        private void OnToolModeHotkeyPress()
         {
+            string _toolMode = string.Empty;
+
             foreach (var (binding, toolMode) in _toolModeBindings)
             {
                 if (binding.WasPerformedThisFrame())
                 {
-                    LogUtil.Info($"Setting Tool Mode: {toolMode}");
-                    //GameScreenUISystem.SetToolMode(toolMode);
+                    if (m_ToolSystem.activeTool is NetToolSystem)
+                    {
+                        _toolMode = GetToolModeString(toolMode);
+                        SetToolMode((NetToolSystem.Mode)Enum.Parse(typeof(NetToolSystem.Mode), _toolMode));
+                    }
+                    else if (m_ToolSystem.activeTool is ZoneToolSystem)
+                    {
+                        _toolMode = GetToolModeString(toolMode, 1);
+                        SetToolMode((ZoneToolSystem.Mode)Enum.Parse(typeof(ZoneToolSystem.Mode), _toolMode));
+                    }
                 }
             }
+        }
+
+        private static string GetToolModeString(string toolMode, int index = 0)
+        {
+            string _toolMode;
+
+            // check if toolmode string contains a pipe. that is needed because the first 3 toolmodes share the same keybinding
+            if (toolMode.Contains("|"))
+            {
+                string[] modes = toolMode.Split('|');
+                _toolMode = modes[index];
+            }
+            else
+            {
+                _toolMode = toolMode;
+            }
+
+            return _toolMode;
         }
 
         private object GetEventObject(string toolName)
@@ -183,9 +213,20 @@ namespace ExtraHotkeys
             }; ;
         }
 
-        private void SetToolMode(NetToolSystem.Mode mode)
+        private void SetToolMode(object mode)
         {
-            //if(m_ToolSystem.activeTool is not NetToolSystem) return;
+            if (mode is NetToolSystem.Mode netToolMode)
+            {
+                m_NetToolSystem.mode = netToolMode;
+                _uiView.TriggerEvent("tool.selectToolMode", (int)netToolMode);
+            }
+
+            if (mode is ZoneToolSystem.Mode zoneToolMode)
+            {
+                m_ZoneToolSystem.mode = zoneToolMode;
+                _uiView.TriggerEvent("tool.selectToolMode", (int)zoneToolMode);
+            }
+
         }
 
         protected override void OnDestroy()

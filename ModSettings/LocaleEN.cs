@@ -82,23 +82,24 @@ namespace ExtraHotkeys
 
 
                 // Toolmode keybinding translations
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeStraightKeybinding)), "Straight" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeStraightKeybinding)), "Set tool mode straight" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolMode1_Keybinding)), "Toolmode 1" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolMode1_Keybinding)), "Set toolmode straight for roads or fill for zones" },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeSimpleCurveKeybinding)), "Simple curve" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeSimpleCurveKeybinding)), "Set tool mode simple curve" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolMode2_Keybinding)), "Toolmode 2" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolMode2_Keybinding)), "Set toolmode simple curve for roads and marquee for zones" },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeComplexCurveKeybinding)), "Complex curve" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeComplexCurveKeybinding)), "Set tool mode complex curve" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolMode3_Keybinding)), "Toolmode 3" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolMode3_Keybinding)), "Set toolmode complex curve for roads and paint for zones" },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeContinuousKeybinding)), "Continuous" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeContinuousKeybinding)), "Set tool mode continuous" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolMode4_Keybinding)), "Toolmode 4" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolMode4_Keybinding)), "Set toolmode continuous for roads" },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeGridKeybinding)), "Grid" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeGridKeybinding)), "Set tool mode grid" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolMode5_Keybinding)), "Toolmode 5" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolMode5_Keybinding)), "Set toolmode grid for roads" },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeReplaceKeybinding)), "Replace" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeReplaceKeybinding)), "Set tool mode replace" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolMode6_Keybinding)), "Toolmode 6" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolMode6_Keybinding)), "Set toolmode replace for roads" },
+
               
 
                 // Snapping options translations

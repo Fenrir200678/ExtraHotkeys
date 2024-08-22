@@ -8,6 +8,7 @@ namespace ExtraHotkeys
     [FileLocation(nameof(ExtraHotkeys))]
     [SettingsUIGroupOrder(gGeneral, gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gAbout)]
     [SettingsUIShowGroupName(gGeneral, gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gAbout)]
+    
 
     public class ModSettings : ModSetting
     {
@@ -121,36 +122,35 @@ namespace ExtraHotkeys
 
 
         // Tool mode keybindings
-        // Straight
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolModeStraightKeybinding))]
+        // Straight for net tools or fill for zone tools
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolMode1_Keybinding))]
         [SettingsUISection(sToolKeybindings, gToolModeKeybindings)]
-        public ProxyBinding ToolModeStraightKeybinding { get; set; }
+        public ProxyBinding ToolMode1_Keybinding { get; set; }
 
-        // Simple curve
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolModeSimpleCurveKeybinding))]
+        // Simple curve for net tools or marquee for zone tools
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolMode2_Keybinding))]
         [SettingsUISection(sToolKeybindings, gToolModeKeybindings)]
-        public ProxyBinding ToolModeSimpleCurveKeybinding { get; set; }
+        public ProxyBinding ToolMode2_Keybinding { get; set; }
 
-        // Complex curve
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolModeComplexCurveKeybinding))]
+        // Complex curve for net tools or paint for zone tools
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolMode3_Keybinding))]
         [SettingsUISection(sToolKeybindings, gToolModeKeybindings)]
-        public ProxyBinding ToolModeComplexCurveKeybinding { get; set; }
+        public ProxyBinding ToolMode3_Keybinding { get; set; }
 
-        // Continuous
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolModeContinuousKeybinding))]
+        // Continuous 
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolMode4_Keybinding))]
         [SettingsUISection(sToolKeybindings, gToolModeKeybindings)]
-        public ProxyBinding ToolModeContinuousKeybinding { get; set; }
+        public ProxyBinding ToolMode4_Keybinding { get; set; }
 
         // Grid
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolModeGridKeybinding))]
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolMode5_Keybinding))]
         [SettingsUISection(sToolKeybindings, gToolModeKeybindings)]
-        public ProxyBinding ToolModeGridKeybinding { get; set; }
+        public ProxyBinding ToolMode5_Keybinding { get; set; }
 
         // Replace
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolModeReplaceKeybinding))]
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToolMode6_Keybinding))]
         [SettingsUISection(sToolKeybindings, gToolModeKeybindings)]
-        public ProxyBinding ToolModeReplaceKeybinding { get; set; }
-
+        public ProxyBinding ToolMode6_Keybinding { get; set; }
 
 
         // Snapping options
