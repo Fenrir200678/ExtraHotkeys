@@ -18,6 +18,8 @@ namespace ExtraHotkeys
         /// <summary>
         /// Log an info message.
         /// </summary>
+
+        [Conditional("DEBUG")]
         public static void Info(string message)
         {
             _log.Info(message);
