@@ -17,6 +17,7 @@ namespace ExtraHotkeys
         private View _uiView;
         private PrefabSystem m_PrefabSystem;
         private GameScreenUISystem m_GameScreenUISystem;
+        private ModSettings ModSettings => Mod.ModSettings;
 
         // List to store hotkey bindings
         private List<(ProxyAction binding, string toolName)> _hotkeyBindings;
@@ -28,8 +29,7 @@ namespace ExtraHotkeys
 
             try
             {
-                InitializeSystems();
-                AddKeybindings();
+                Initialize();
             }
             catch (Exception ex)
             {
@@ -43,7 +43,10 @@ namespace ExtraHotkeys
 
             try
             {
-                CheckHotKeys();
+                if (ModSettings.EnableMod)
+                {
+                    CheckHotKeys();
+                }
             }
             catch (Exception ex)
             {
@@ -51,13 +54,15 @@ namespace ExtraHotkeys
             }
         }
 
-        private void InitializeSystems()
+        private void Initialize()
         {
             inputManager = GameManager.instance.inputManager;
             _uiView = GameManager.instance.userInterface.view.View;
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
             _hotkeyBindings = new List<(ProxyAction, string)>();
+
+            AddKeybindings();
         }
 
         private ProxyAction CreateAndEnableBinding(string settingName)

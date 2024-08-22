@@ -14,16 +14,27 @@ namespace ExtraHotkeys
         {
             return new Dictionary<string, string>
             {
-                // General and group translations
+                // General, section and group translations
                 { m_Setting.GetSettingsLocaleID(), ModAssemblyInfo.Title },
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ResetBindings)), "Reset key bindings" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ResetBindings)), $"Reset all key bindings of the mod" },
+                { m_Setting.GetOptionTabLocaleID(ModSettings.sGeneral), "General" },
+                { m_Setting.GetOptionTabLocaleID(ModSettings.sToolKeybindings), "Tool Keybindings" },
+                { m_Setting.GetOptionTabLocaleID(ModSettings.sAdditionalKeybindings), "Additional" },
 
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.kKeybindingGroup), "Tool Keybindings" },
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.kAbout), "About Mod" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gGeneral), "General Settings" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gOpenToolsKeybindings), "Open Tools Keybindings" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolModeKeybindings), "Tool Mode Keybindings" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gSnappingKeybindings), "Snapping Options" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gAbout), "About Mod" },
 
 
-                // Keybinding translations (label / description)
+                // General settings translations
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableMod)), "Enable mod" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableMod)), "Enable or disable the mod" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings of the mod" },
+
+
+                // Tool keybinding translations
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.OpenZonesKeyBinding)), "Zones" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenZonesKeyBinding)), "Open Zones tools" },
 
@@ -37,7 +48,7 @@ namespace ExtraHotkeys
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenRoadsKeyBinding)), "Open Roads tools" },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.OpenElectricityKeyBinding)), "Electricity" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenElectricityKeyBinding)), $"Open Electricity tools" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenElectricityKeyBinding)), "Open Electricity tools" },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.OpenWaterAndSewageKeyBinding)), "Water & Sewage" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenWaterAndSewageKeyBinding)), "Open Water & Sewage tools" },
@@ -69,11 +80,62 @@ namespace ExtraHotkeys
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.OpenLandscapingKeyBinding)), "Landscaping" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.OpenLandscapingKeyBinding)), "Open Landscaping tools" },
 
+
+                // Toolmode keybinding translations
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeStraightKeybinding)), "Straight" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeStraightKeybinding)), "Set tool mode straight" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeSimpleCurveKeybinding)), "Simple curve" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeSimpleCurveKeybinding)), "Set tool mode simple curve" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeComplexCurveKeybinding)), "Complex curve" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeComplexCurveKeybinding)), "Set tool mode complex curve" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeContinuousKeybinding)), "Continuous" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeContinuousKeybinding)), "Set tool mode continuous" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeGridKeybinding)), "Grid" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeGridKeybinding)), "Set tool mode grid" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToolModeReplaceKeybinding)), "Replace" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToolModeReplaceKeybinding)), "Set tool mode replace" },
+              
+
+                // Snapping options translations
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToggleAllSnappingKeyBinding)), "Toggle all" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToggleAllSnappingKeyBinding)), "Toggle all snapping options on/off" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToExistingGeometryKeyBinding)), "Existing geometry" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToExistingGeometryKeyBinding)), "Snap to existing geometry" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToCellLengthKeyBinding)), "Zoning cell lenght" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToCellLengthKeyBinding)), "Snap to zoning cell lenght" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapTo90DegreeAnglesKeyBinding)), "90 degree angles" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapTo90DegreeAnglesKeyBinding)), "Snap to 90 degree angles" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToBuildingSidesKeyBinding)), "Building sides" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToBuildingSidesKeyBinding)), "Snap to building sides" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToGuidelinesKeyBinding)), "Guidelines" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToGuidelinesKeyBinding)), "Snap to guidelines" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToNearbyGeometryKeyBinding)), "Nearby geometry" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToNearbyGeometryKeyBinding)), "Snap to nearby geometry" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToZoneGridKeyBinding)), "Zone grid" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToZoneGridKeyBinding)), "Snap to zone grid" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToRoadSidesKeyBinding)), "Road sides" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToRoadSidesKeyBinding)), "Snap to road sides" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ShowContourLinesKeyBinding)), "Contour lines" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ShowContourLinesKeyBinding)), "Show contour lines" },
+
+
                 // About mod translations
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ModVersion)), $"{ModAssemblyInfo.Title}, © 2024 by Fenrir" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ModVersion)), $"V{ModAssemblyInfo.Version}" },
-
-
             };
         }
 

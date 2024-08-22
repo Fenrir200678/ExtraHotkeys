@@ -63,7 +63,7 @@ $(Screenshot00)$(Screenshot01)$(Screenshot02)$(Screenshot03)$(Screenshot04)$(Scr
     <Tag Value="Code Mod" />
 
     <!-- Link to the forum post where the mod can be discussed. -->
-    <ForumLink Value="" />
+    <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/extra-hotkeys.1700331/" />
 
     <!-- Version of the mod.  Copied from assembly Version. -->
     <ModVersion Value="$(Version)" />
@@ -78,6 +78,8 @@ $([System.IO.File]::ReadAllText('.\ChangeLog.md').TrimEnd())
 
     <!-- External links. Supported types are discord, github, youtube, twitch, x, paypal, patreon.  Can be set multiple times. -->
     <ExternalLink Type="github" Url="https://github.com/Fenrir200678/ExtraHotkeys" />
+    <ExternalLink Type="discord" Url="https://discord.gg/Uukmqvy8" />
+    <ExternalLink Type="paypal" Url="https://www.paypal.com/paypalme/fenrir200678" />
 </Publish>
                 ]]>
             </GeneratedText>

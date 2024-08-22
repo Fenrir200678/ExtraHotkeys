@@ -18,13 +18,13 @@ namespace ExtraHotkeys
 
             ModSettings = new ModSettings(this);
             ModSettings.RegisterInOptionsUI();
-
-
             ModSettings.RegisterKeyBindings();
+
             AssetDatabase.global.LoadSettings(nameof(ExtraHotkeys), ModSettings, new ModSettings(this));
             ModSettings.ApplyAndSave();
 
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(ModSettings));
+
             updateSystem.UpdateAt<UISystem>(SystemUpdatePhase.UIUpdate);
         }
 
