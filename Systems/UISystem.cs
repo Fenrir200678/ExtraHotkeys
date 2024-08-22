@@ -2,6 +2,7 @@
 using Game.Input;
 using Game.Prefabs;
 using Game.SceneFlow;
+using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
 using System;
@@ -17,10 +18,15 @@ namespace ExtraHotkeys
         private View _uiView;
         private PrefabSystem m_PrefabSystem;
         private GameScreenUISystem m_GameScreenUISystem;
+        private ToolSystem m_ToolSystem;
+        private NetToolSystem m_NetToolSystem;
         private ModSettings ModSettings => Mod.ModSettings;
 
-        // List to store hotkey bindings
-        private List<(ProxyAction binding, string toolName)> _hotkeyBindings;
+        // List for open tool windows bindings
+        private List<(ProxyAction binding, string toolName)> _openToolWindowsBindings;
+
+        // List for tool mode bindings
+        private List<(ProxyAction binding, string toolMode)> _toolModeBindings;
 
         protected override void OnCreate()
         {
@@ -45,7 +51,11 @@ namespace ExtraHotkeys
             {
                 if (ModSettings.EnableMod)
                 {
-                    CheckHotKeys();
+                    if (!inputManager.mouseOnScreen)
+                        return;
+
+                    CheckForOpenToolWindowsHotkeys();
+                    CheckForToolModeHotkeys();
                 }
             }
             catch (Exception ex)
@@ -58,11 +68,58 @@ namespace ExtraHotkeys
         {
             inputManager = GameManager.instance.inputManager;
             _uiView = GameManager.instance.userInterface.view.View;
+
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_GameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
-            _hotkeyBindings = new List<(ProxyAction, string)>();
+            m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
+            m_NetToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
 
-            AddKeybindings();
+            _openToolWindowsBindings = new List<(ProxyAction, string)>();
+            _toolModeBindings = new List<(ProxyAction, string)>();
+
+            AddOpenToolsKeybindings();
+            AddSetToolModeKeybindings();
+        }
+
+        private void AddOpenToolsKeybindings()
+        {
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenZonesKeyBinding), "Zones");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenAreasKeyBinding), "Areas");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenSignaturesKeyBinding), "Signatures");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenRoadsKeyBinding), "Roads");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenElectricityKeyBinding), "Electricity");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenWaterAndSewageKeyBinding), "Water & Sewage");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenHealthAndDeathcareKeyBinding), "Health & Deathcare");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenGarbageManagementKeyBinding), "Garbage Management");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenEducationAndResearchKeyBinding), "Education & Research");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenFireAndRescueKeyBinding), "Fire & Rescue");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenPoliceAndAdministrationKeyBinding), "Police & Administration");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenTransportationKeyBinding), "Transportation");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenParksAndRecreationKeyBinding), "Parks & Recreation");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenCommunicationsKeyBinding), "Communications");
+            RegisterOpenToolsKeybinding(nameof(ModSettings.OpenLandscapingKeyBinding), "Landscaping");
+        }
+
+        private void AddSetToolModeKeybindings()
+        {
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeStraightKeybinding), "Straight");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeSimpleCurveKeybinding), "SimpleCurve");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeComplexCurveKeybinding), "ComplexCurve");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeContinuousKeybinding), "Continuous");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeGridKeybinding), "Grid");
+            RegisterToolModeKeybinding(nameof(ModSettings.ToolModeReplaceKeybinding), "Replace");
+        }
+
+        private void RegisterOpenToolsKeybinding(string settingName, string toolName)
+        {
+            var binding = CreateAndEnableBinding(settingName);
+            _openToolWindowsBindings.Add((binding, toolName));
+        }
+
+        private void RegisterToolModeKeybinding(string settingName, string toolMode)
+        {
+            var binding = CreateAndEnableBinding(settingName);
+            _toolModeBindings.Add((binding, toolMode));
         }
 
         private ProxyAction CreateAndEnableBinding(string settingName)
@@ -72,41 +129,25 @@ namespace ExtraHotkeys
             return binding;
         }
 
-        private void AddKeybindings()
+        private void CheckForOpenToolWindowsHotkeys()
         {
-            RegisterKeybinding(nameof(ModSettings.OpenZonesKeyBinding), "Zones");
-            RegisterKeybinding(nameof(ModSettings.OpenAreasKeyBinding), "Areas");
-            RegisterKeybinding(nameof(ModSettings.OpenSignaturesKeyBinding), "Signatures");
-            RegisterKeybinding(nameof(ModSettings.OpenRoadsKeyBinding), "Roads");
-            RegisterKeybinding(nameof(ModSettings.OpenElectricityKeyBinding), "Electricity");
-            RegisterKeybinding(nameof(ModSettings.OpenWaterAndSewageKeyBinding), "Water & Sewage");
-            RegisterKeybinding(nameof(ModSettings.OpenHealthAndDeathcareKeyBinding), "Health & Deathcare");
-            RegisterKeybinding(nameof(ModSettings.OpenGarbageManagementKeyBinding), "Garbage Management");
-            RegisterKeybinding(nameof(ModSettings.OpenEducationAndResearchKeyBinding), "Education & Research");
-            RegisterKeybinding(nameof(ModSettings.OpenFireAndRescueKeyBinding), "Fire & Rescue");
-            RegisterKeybinding(nameof(ModSettings.OpenPoliceAndAdministrationKeyBinding), "Police & Administration");
-            RegisterKeybinding(nameof(ModSettings.OpenTransportationKeyBinding), "Transportation");
-            RegisterKeybinding(nameof(ModSettings.OpenParksAndRecreationKeyBinding), "Parks & Recreation");
-            RegisterKeybinding(nameof(ModSettings.OpenCommunicationsKeyBinding), "Communications");
-            RegisterKeybinding(nameof(ModSettings.OpenLandscapingKeyBinding), "Landscaping");
-        }
-
-        private void RegisterKeybinding(string settingName, string toolName)
-        {
-            var binding = CreateAndEnableBinding(settingName);
-            _hotkeyBindings.Add((binding, toolName));
-        }
-
-        private void CheckHotKeys()
-        {
-            if (!inputManager.mouseOnScreen)
-                return;
-
-            foreach (var (binding, toolName) in _hotkeyBindings)
+            foreach (var (binding, toolName) in _openToolWindowsBindings)
             {
                 if (binding.WasPerformedThisFrame())
                 {
                     _uiView.TriggerEvent("toolbar.selectAssetMenu", GetEventObject(toolName));
+                }
+            }
+        }
+
+        private void CheckForToolModeHotkeys()
+        {
+            foreach (var (binding, toolMode) in _toolModeBindings)
+            {
+                if (binding.WasPerformedThisFrame())
+                {
+                    LogUtil.Info($"Setting Tool Mode: {toolMode}");
+                    //GameScreenUISystem.SetToolMode(toolMode);
                 }
             }
         }
@@ -140,6 +181,17 @@ namespace ExtraHotkeys
                 index = menuEntity.Index,
                 version = menuEntity.Version
             }; ;
+        }
+
+        private void SetToolMode(NetToolSystem.Mode mode)
+        {
+            //if(m_ToolSystem.activeTool is not NetToolSystem) return;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            LogUtil.Info($"{nameof(UISystem)}.{nameof(OnDestroy)}");
         }
     }
 }
