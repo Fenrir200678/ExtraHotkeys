@@ -7,7 +7,10 @@ namespace ExtraHotkeys
         private readonly InputManager _gameInputManager;
         private readonly ModSettings _modSettings;
 
-        public UIInputManager(InputManager gameInputManager, ModSettings modSettings)
+        public UIInputManager(
+            InputManager gameInputManager,
+            ModSettings modSettings
+            )
         {
             _gameInputManager = gameInputManager;
             _modSettings = modSettings;
@@ -26,5 +29,7 @@ namespace ExtraHotkeys
             binding.shouldBeEnabled = true;
             return binding;
         }
+
+        // MouseWheel checks here
     }
 }

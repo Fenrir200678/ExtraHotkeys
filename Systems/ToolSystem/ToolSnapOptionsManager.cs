@@ -1,7 +1,5 @@
 ﻿using cohtml.Net;
-using ExtraHotkeys;
 using Game.Input;
-using Game.Prefabs;
 using Game.Tools;
 using System;
 using System.Collections.Generic;
@@ -11,25 +9,22 @@ namespace ExtraHotkeys
     public class ToolSnapOptionsManager
     {
         private readonly View _uiView;
-        private readonly PrefabSystem _prefabSystem;
-        private readonly ToolBaseSystem _toolBaseSystem;
         private readonly UIInputManager _uiInputManager;
         private readonly ModSettings _modSettings;
+        private readonly NetToolSystem _netToolSystem;
         private readonly List<(ProxyAction binding, string snapOption)> _snapOptionsBindings;
 
         public ToolSnapOptionsManager(
-            View uiView, 
-            PrefabSystem prefabSystem, 
-            ToolBaseSystem toolBaseSystem, 
-            UIInputManager uiInputManager, 
-            ModSettings modSettings
+            View uiView,
+            UIInputManager uiInputManager,
+            ModSettings modSettings,
+            NetToolSystem netToolSystem
             )
         {
             _uiView = uiView;
-            _prefabSystem = prefabSystem;
-            _toolBaseSystem = toolBaseSystem;
             _uiInputManager = uiInputManager;
             _modSettings = modSettings;
+            _netToolSystem = netToolSystem;
             _snapOptionsBindings = new List<(ProxyAction, string)>();
 
             InitializeBindings();
@@ -39,7 +34,6 @@ namespace ExtraHotkeys
 
         private void InitializeBindings()
         {
-            RegisterKeybinding(nameof(_modSettings.ToggleAllSnappingKeyBinding), "All");
             RegisterKeybinding(nameof(_modSettings.SnapToExistingGeometryKeyBinding), "ExistingGeometry");
             RegisterKeybinding(nameof(_modSettings.SnapToCellLengthKeyBinding), "CellLength");
             RegisterKeybinding(nameof(_modSettings.SnapTo90DegreeAnglesKeyBinding), "StraightDirection"); // ?
@@ -63,27 +57,17 @@ namespace ExtraHotkeys
             {
                 if (binding.WasPerformedThisFrame())
                 {
-                    SetSnapOption(snapOption);
+                    _uiView.TriggerEvent("tool.setSelectedSnapMask", (uint)GetSnapMask(snapOption));
                 }
             }
         }
 
-        private void SetSnapOption(string snapOption)
+        private Snap GetSnapMask(string snapOption)
         {
-            LogUtil.Info($"Snapoption {snapOption}");
-            Snap snapValue = (Snap)Enum.Parse(typeof(Snap), snapOption);
-            LogUtil.Info($"SnapValue: {snapValue} / {(uint)snapValue}");
-            /*if (Enum.TryParse<Snap>(snapOption, out var maskValue))
-            {
-                LogUtil.Info($"Setting snap mask to: {maskValue} / {(uint)maskValue}");
-                _uiView.TriggerEvent("tool.setSelectedSnapMask", (uint)maskValue);
-            }
-            else
-            {
-                LogUtil.Warn($"Failed to parse snap option: {snapOption}");
-            }
-            */
+            Snap selectedSnapValue = (Snap)Enum.Parse(typeof(Snap), snapOption);
+            Snap currentSnapMask = _netToolSystem.selectedSnap;
 
+            return currentSnapMask ^ selectedSnapValue; 
         }
     }
 }

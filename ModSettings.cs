@@ -6,8 +6,8 @@ using Game.Settings;
 namespace ExtraHotkeys
 {
     [FileLocation(nameof(ExtraHotkeys))]
-    [SettingsUIGroupOrder(gGeneral, gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gAbout)]
-    [SettingsUIShowGroupName(gGeneral, gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gAbout)]
+    [SettingsUIGroupOrder(gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gGeneral, gAbout)]
+    [SettingsUIShowGroupName(gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gGeneral, gAbout)]
     
 
     public class ModSettings : ModSetting
@@ -25,22 +25,6 @@ namespace ExtraHotkeys
         public const string gAbout = "About";
 
         public ModSettings(IMod mod) : base(mod) { }
-
-        // General settings
-        // Enable mod
-        [SettingsUISection(gGeneral, gGeneral)]
-        public bool EnableMod { get; set; } = true;
-
-        // Reset key bindings
-        [SettingsUISection(sGeneral, gGeneral)]
-        public bool ResetBindings
-        {
-            set
-            {
-                LogUtil.Info("Reset key bindings");
-                ResetKeyBindings();
-            }
-        }
 
         // Tool keybindings
         // Zones
@@ -60,7 +44,7 @@ namespace ExtraHotkeys
 
 
         // Roads
-        [SettingsUIKeyboardBinding(BindingKeyboard.R, nameof(OpenRoadsKeyBinding))]
+        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(OpenRoadsKeyBinding))]
         [SettingsUISection(sToolKeybindings, gOpenToolsKeybindings)]
         public ProxyBinding OpenRoadsKeyBinding { get; set; }
 
@@ -154,11 +138,6 @@ namespace ExtraHotkeys
 
 
         // Snapping options
-        // Toggle all snapping on/off
-        [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(ToggleAllSnappingKeyBinding))]
-        [SettingsUISection(sToolKeybindings, gSnappingKeybindings)]
-        public ProxyBinding ToggleAllSnappingKeyBinding { get; set; }
-
         // Snap to exising geometry
         [SettingsUIKeyboardBinding(BindingKeyboard.None, nameof(SnapToExistingGeometryKeyBinding))]
         [SettingsUISection(sToolKeybindings, gSnappingKeybindings)]
@@ -205,6 +184,21 @@ namespace ExtraHotkeys
         public ProxyBinding ShowContourLinesKeyBinding { get; set; }
 
 
+        // General settings
+        // Enable mod
+        [SettingsUISection(gGeneral, gGeneral)]
+        public bool EnableMod { get; set; } = true;
+
+        // Reset key bindings
+        [SettingsUISection(sGeneral, gGeneral)]
+        public bool ResetBindings
+        {
+            set
+            {
+                LogUtil.Info("Reset key bindings");
+                ResetKeyBindings();
+            }
+        }
 
         // About mod
         [SettingsUISection(sGeneral, gAbout)]

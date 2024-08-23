@@ -9,23 +9,31 @@ namespace ExtraHotkeys
     public class ToolModeManager
     {
         private readonly View _uiView;
-        private readonly ToolSystem _toolSystem;
-        private readonly NetToolSystem _netToolSystem;
-        private readonly ZoneToolSystem _zoneToolSystem;
         private readonly UIInputManager _uiInputManager;
         private readonly ModSettings _modSettings;
         private readonly ToolBaseSystem _toolBaseSystem;
+        private readonly ToolSystem _toolSystem;
+        private readonly NetToolSystem _netToolSystem;
+        private readonly ZoneToolSystem _zoneToolSystem;
         private readonly List<(ProxyAction binding, string toolMode)> _toolModeBindings;
 
-        public ToolModeManager(View uiView, ToolSystem m_toolSystem, NetToolSystem m_netToolSystem, UIInputManager uiInputManager, ZoneToolSystem m_zoneToolSystem, ModSettings modSettings, ToolBaseSystem toolBaseSystem)
+        public ToolModeManager(
+            View uiView,
+            UIInputManager uiInputManager,
+            ModSettings modSettings,
+            ToolBaseSystem toolBaseSystem,
+            ToolSystem m_toolSystem,
+            NetToolSystem m_netToolSystem,
+            ZoneToolSystem m_zoneToolSystem
+            )
         {
             _uiView = uiView;
-            _toolSystem = m_toolSystem;
-            _netToolSystem = m_netToolSystem;
-            _zoneToolSystem = m_zoneToolSystem;
             _uiInputManager = uiInputManager;
+            _toolSystem = m_toolSystem;
             _modSettings = modSettings;
             _toolBaseSystem = toolBaseSystem;
+            _netToolSystem = m_netToolSystem;
+            _zoneToolSystem = m_zoneToolSystem;
             _toolModeBindings = new List<(ProxyAction, string)>();
 
             InitializeBindings();

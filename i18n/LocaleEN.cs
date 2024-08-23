@@ -103,9 +103,6 @@ namespace ExtraHotkeys
               
 
                 // Snapping options translations
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ToggleAllSnappingKeyBinding)), "Toggle all" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ToggleAllSnappingKeyBinding)), "Toggle all snapping options on/off" },
-
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.SnapToExistingGeometryKeyBinding)), "Existing geometry" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.SnapToExistingGeometryKeyBinding)), "Snap to existing geometry" },
 

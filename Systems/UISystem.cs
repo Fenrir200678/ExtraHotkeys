@@ -12,9 +12,11 @@ namespace ExtraHotkeys
     public partial class UISystem : UISystemBase
     {
         private View _uiView;
+        private ModSettings ModSettings => Mod.ModSettings;
+
         private PrefabSystem m_prefabSystem;
-        private ToolSystem m_toolSystem;
         private ToolBaseSystem m_ToolBaseSystem;
+        private ToolSystem m_toolSystem;
         private NetToolSystem m_netToolSystem;
         private ZoneToolSystem m_zoneToolSystem;
         private GameScreenUISystem m_gameScreenUISystem;
@@ -24,7 +26,6 @@ namespace ExtraHotkeys
         private ToolModeManager _toolModeManager;
         private ToolSnapOptionsManager _toolSnapOptionsManager;
 
-        private ModSettings ModSettings => Mod.ModSettings;
 
         protected override void OnCreate()
         {
@@ -69,16 +70,29 @@ namespace ExtraHotkeys
             _uiView = GameManager.instance.userInterface.view.View;
 
             m_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
-            m_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_ToolBaseSystem = World.GetOrCreateSystemManaged<ToolBaseSystem>();
+            m_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_netToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
             m_zoneToolSystem = World.GetOrCreateSystemManaged<ZoneToolSystem>();
             m_gameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
 
             _uiInputManager = new UIInputManager(inputManager, ModSettings);
-            _toolWindowManager = new ToolWindowManager(_uiView, m_prefabSystem, _uiInputManager, ModSettings);
-            _toolModeManager = new ToolModeManager(_uiView, m_toolSystem, m_netToolSystem, _uiInputManager, m_zoneToolSystem, ModSettings, m_ToolBaseSystem);
-            _toolSnapOptionsManager = new ToolSnapOptionsManager(_uiView, m_prefabSystem, m_ToolBaseSystem, _uiInputManager, ModSettings);
+            _toolWindowManager = new ToolWindowManager(_uiView, _uiInputManager, ModSettings, m_prefabSystem);
+            _toolModeManager = new ToolModeManager(
+                _uiView, 
+                _uiInputManager, 
+                ModSettings, 
+                m_ToolBaseSystem,
+                m_toolSystem, 
+                m_netToolSystem, 
+                m_zoneToolSystem
+                );
+            _toolSnapOptionsManager = new ToolSnapOptionsManager(
+                _uiView, 
+                _uiInputManager, 
+                ModSettings, 
+                m_netToolSystem
+                );
         }
 
         protected override void OnDestroy()

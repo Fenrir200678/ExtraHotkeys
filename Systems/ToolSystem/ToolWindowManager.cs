@@ -1,4 +1,5 @@
 ﻿using cohtml.Net;
+using Colossal.UI;
 using Game.Input;
 using Game.Prefabs;
 using System;
@@ -11,17 +12,22 @@ namespace ExtraHotkeys
     public class ToolWindowManager
     {
         private readonly View _uiView;
-        private readonly PrefabSystem _prefabSystem;
         private readonly UIInputManager _uiInputManager;
         private readonly ModSettings _modSettings;
+        private readonly PrefabSystem _prefabSystem;
         private readonly List<(ProxyAction binding, string toolName)> _openToolWindowsBindings;
 
-        public ToolWindowManager(View uiView, PrefabSystem m_prefabSystem, UIInputManager uiInputManager, ModSettings modSettings)
+        public ToolWindowManager(
+            View uiView, 
+            UIInputManager uiInputManager, 
+            ModSettings modSettings,
+            PrefabSystem m_prefabSystem
+            )
         {
             _uiView = uiView;
-            _prefabSystem = m_prefabSystem;
             _uiInputManager = uiInputManager;
             _modSettings = modSettings;
+            _prefabSystem = m_prefabSystem;
             _openToolWindowsBindings = new List<(ProxyAction, string)>();
 
             InitializeBindings();
@@ -61,17 +67,12 @@ namespace ExtraHotkeys
             {
                 if (binding.WasPerformedThisFrame())
                 {
-                    OpenToolWindow(toolName);
+                    _uiView.TriggerEvent("toolbar.selectAssetMenu", GetAssetMenuObject(toolName));
                 }
             }
         }
 
-        private void OpenToolWindow(string toolName)
-        {
-            _uiView.TriggerEvent("toolbar.selectAssetMenu", GetEventObject(toolName));
-        }
-
-        private object GetEventObject(string toolName)
+        private object GetAssetMenuObject(string toolName)
         {
             EntityQuery assetMenuData = _prefabSystem.World.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<UIAssetMenuData>());
             NativeArray<Entity> menuEntities = assetMenuData.ToEntityArray(Allocator.Temp);
