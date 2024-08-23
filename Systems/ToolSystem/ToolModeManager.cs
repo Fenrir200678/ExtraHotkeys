@@ -49,6 +49,8 @@ namespace ExtraHotkeys
             RegisterKeybinding(nameof(_modSettings.ToolMode4_Keybinding), "Continuous");
             RegisterKeybinding(nameof(_modSettings.ToolMode5_Keybinding), "Grid");
             RegisterKeybinding(nameof(_modSettings.ToolMode6_Keybinding), "Replace");
+
+            RegisterKeybinding(nameof(_modSettings.UpdateElevationStep), "UpdateElevation");
         }
 
         private void RegisterKeybinding(string settingName, string toolMode)
@@ -63,7 +65,14 @@ namespace ExtraHotkeys
             {
                 if (binding.WasPerformedThisFrame())
                 {
-                    SetToolMode(toolMode);
+                    if (toolMode == "UpdateElevation")
+                    {
+                        SetElevationStep();
+                    }
+                    else
+                    {
+                        SetToolMode(toolMode);
+                    }
                 }
             }
         }
@@ -105,6 +114,20 @@ namespace ExtraHotkeys
             else
             {
                 LogUtil.Warn($"Invalid mode name for ZoneToolSystem: {modeName}");
+            }
+        }
+
+        private void SetElevationStep()
+        {
+            if (_modSettings.EnableUpdateElevationSteps)
+            {
+                if (_toolSystem.activeTool is not NetToolSystem)
+                    return;
+
+                float newElevation = _netToolSystem.elevationStep / 2.0f;
+                newElevation = newElevation < 1.25f ? 10f : newElevation;
+
+                _uiView.TriggerEvent("tool.setElevationStep", newElevation);
             }
         }
 

@@ -18,18 +18,26 @@ namespace ExtraHotkeys
                 { m_Setting.GetSettingsLocaleID(), ModAssemblyInfo.Title },
                 { m_Setting.GetOptionTabLocaleID(ModSettings.sGeneral), "General" },
                 { m_Setting.GetOptionTabLocaleID(ModSettings.sToolKeybindings), "Tool Keybindings" },
-                { m_Setting.GetOptionTabLocaleID(ModSettings.sAdditionalKeybindings), "Additional" },
 
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.gGeneral), "General Settings" },
                 { m_Setting.GetOptionGroupLocaleID(ModSettings.gOpenToolsKeybindings), "Open Tools Keybindings" },
                 { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolModeKeybindings), "Tool Mode Keybindings" },
                 { m_Setting.GetOptionGroupLocaleID(ModSettings.gSnappingKeybindings), "Snapping Options" },
+
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gGeneral), "General Settings" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolRelated), "Tool Related Settings" },
                 { m_Setting.GetOptionGroupLocaleID(ModSettings.gAbout), "About Mod" },
 
 
                 // General settings translations
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableMod)), "Enable mod" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableMod)), "Enable or disable the mod" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableElevationScroll)), "Enable elevation scroll" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableElevationScroll)), "[TODO] Enable to set elevation via mouse scroll wheel." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableUpdateElevationSteps)), "Enable elevation step toggle" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableUpdateElevationSteps)), "Enable to set elevation steps with Alt + right mouse click." },
+
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings of the mod" },
 

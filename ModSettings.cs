@@ -6,22 +6,23 @@ using Game.Settings;
 namespace ExtraHotkeys
 {
     [FileLocation(nameof(ExtraHotkeys))]
-    [SettingsUIGroupOrder(gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gGeneral, gAbout)]
-    [SettingsUIShowGroupName(gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gGeneral, gAbout)]
-    
+    [SettingsUIGroupOrder(gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gGeneral, gToolRelated, gAbout)]
+    [SettingsUIShowGroupName(gOpenToolsKeybindings, gToolModeKeybindings, gSnappingKeybindings, gGeneral, gToolRelated, gAbout)]
+
 
     public class ModSettings : ModSetting
     {
         // Section names
-        public const string sGeneral = "General";
         public const string sToolKeybindings = "Tool Keybindings";
-        public const string sAdditionalKeybindings = "Additional";
+        public const string sGeneral = "General";
 
         // Group names
-        public const string gGeneral = "General";
         public const string gOpenToolsKeybindings = "Open tools";
         public const string gToolModeKeybindings = "Tool modes";
         public const string gSnappingKeybindings = "Snapping options";
+        
+        public const string gGeneral = "General";
+        public const string gToolRelated = "Tool related";
         public const string gAbout = "About";
 
         public ModSettings(IMod mod) : base(mod) { }
@@ -186,7 +187,7 @@ namespace ExtraHotkeys
 
         // General settings
         // Enable mod
-        [SettingsUISection(gGeneral, gGeneral)]
+        [SettingsUISection(sGeneral, gGeneral)]
         public bool EnableMod { get; set; } = true;
 
         // Reset key bindings
@@ -199,6 +200,21 @@ namespace ExtraHotkeys
                 ResetKeyBindings();
             }
         }
+
+        // Tool related settings
+        // Enable elevation scroll
+        [SettingsUISection(sGeneral, gToolRelated)]
+        public bool EnableElevationScroll { get; set; } = true;
+
+        // Enable update elevation steps
+        [SettingsUISection(sGeneral, gToolRelated)]
+        public bool EnableUpdateElevationSteps { get; set; } = true;
+
+        // Hidden elevation scroll key bindings
+        [SettingsUIMouseBinding(BindingMouse.Right, nameof(UpdateElevationStep), alt: true)]
+        [SettingsUIHidden]
+        public ProxyBinding UpdateElevationStep { get; set; }
+
 
         // About mod
         [SettingsUISection(sGeneral, gAbout)]
