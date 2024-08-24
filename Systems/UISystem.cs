@@ -26,6 +26,8 @@ namespace ExtraHotkeys
         private ToolModeManager _toolModeManager;
         private ToolSnapOptionsManager _toolSnapOptionsManager;
 
+        private GameManager _gameManager;
+
 
         protected override void OnCreate()
         {
@@ -48,14 +50,41 @@ namespace ExtraHotkeys
 
             try
             {
-                if (ModSettings.EnableMod)
+                if (ModSettings.EnableMod && _gameManager != null && _gameManager.gameMode == Game.GameMode.Game)
                 {
-                    if (!_uiInputManager.IsMouseOnScreen())
+                    if (_uiInputManager == null || !_uiInputManager.IsMouseOnScreen())
                         return;
 
-                    _toolWindowManager.CheckHotkeys();
-                    _toolModeManager.CheckHotkeys();
-                    _toolSnapOptionsManager.CheckHotkeys();
+                    if (_uiInputManager.IsHoldingAlt())
+                    {
+                        if (_uiInputManager.IsZoomingIn())
+                        {
+                            LogUtil.Info("Zooming in");
+                        }
+
+                        if (_uiInputManager.IsZoomingOut())
+                        {
+                            LogUtil.Info("Zooming out");
+                        }
+                    }
+
+                    if (_uiInputManager.IsHoldingCtrl())
+                    {
+                        if (_uiInputManager.IsZoomingIn())
+                        {
+                            LogUtil.Info("Zooming in");
+                        }
+
+                        if (_uiInputManager.IsZoomingOut())
+                        {
+                            LogUtil.Info("Zooming out");
+                        }
+                    }
+
+
+                    _toolWindowManager?.CheckHotkeys();
+                    _toolModeManager?.CheckHotkeys();
+                    _toolSnapOptionsManager?.CheckHotkeys();
                 }
             }
             catch (Exception ex)
@@ -67,6 +96,8 @@ namespace ExtraHotkeys
         private void Initialize()
         {
             var inputManager = GameManager.instance.inputManager;
+            _gameManager = GameManager.instance;
+
             _uiView = GameManager.instance.userInterface.view.View;
 
             m_prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
@@ -76,21 +107,32 @@ namespace ExtraHotkeys
             m_zoneToolSystem = World.GetOrCreateSystemManaged<ZoneToolSystem>();
             m_gameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
 
-            _uiInputManager = new UIInputManager(inputManager, ModSettings);
-            _toolWindowManager = new ToolWindowManager(_uiView, _uiInputManager, ModSettings, m_prefabSystem);
+            _uiInputManager = new UIInputManager(
+                inputManager,
+                ModSettings
+                );
+
+            _toolWindowManager = new ToolWindowManager(
+                _uiView,
+                _uiInputManager,
+                ModSettings,
+                m_prefabSystem
+                );
+
             _toolModeManager = new ToolModeManager(
-                _uiView, 
-                _uiInputManager, 
-                ModSettings, 
+                _uiView,
+                _uiInputManager,
+                ModSettings,
                 m_ToolBaseSystem,
-                m_toolSystem, 
-                m_netToolSystem, 
+                m_toolSystem,
+                m_netToolSystem,
                 m_zoneToolSystem
                 );
+
             _toolSnapOptionsManager = new ToolSnapOptionsManager(
-                _uiView, 
-                _uiInputManager, 
-                ModSettings, 
+                _uiView,
+                _uiInputManager,
+                ModSettings,
                 m_netToolSystem
                 );
         }

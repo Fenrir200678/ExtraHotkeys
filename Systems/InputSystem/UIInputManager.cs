@@ -1,4 +1,5 @@
 ﻿using Game.Input;
+using UnityEngine.InputSystem;
 
 namespace ExtraHotkeys
 {
@@ -6,6 +7,18 @@ namespace ExtraHotkeys
     {
         private readonly InputManager _gameInputManager;
         private readonly ModSettings _modSettings;
+        private readonly ProxyAction m_MouseZoomAction;
+        protected readonly ProxyActionMap m_CameraMap;
+
+        protected bool m_IsInProgress;
+        public bool IsActive => m_IsInProgress;
+
+        public enum WheelSensitivityFactor
+        {
+            Low = 1,
+            Medium = 2,
+            High = 3
+        }
 
         public UIInputManager(
             InputManager gameInputManager,
@@ -15,12 +28,10 @@ namespace ExtraHotkeys
             _gameInputManager = gameInputManager;
             _modSettings = modSettings;
 
-            LogUtil.Info($"{nameof(UIInputManager)} initialized");
-        }
+            m_CameraMap = _gameInputManager.FindActionMap("Camera");
+            m_MouseZoomAction = m_CameraMap.FindAction("Zoom Mouse");
 
-        public bool IsMouseOnScreen()
-        {
-            return _gameInputManager.mouseOnScreen;
+            LogUtil.Info($"{nameof(UIInputManager)} initialized");
         }
 
         public ProxyAction GetAndEnableBinding(string settingName)
@@ -30,6 +41,47 @@ namespace ExtraHotkeys
             return binding;
         }
 
-        // MouseWheel checks here
+        public bool IsMouseOnScreen()
+        {
+            return _gameInputManager.mouseOnScreen;
+        }
+
+        public bool IsHoldingKey(Key key)
+        {
+            return Keyboard.current[key].isPressed;
+        }
+
+        public bool IsHoldingAlt()
+        {
+            return Keyboard.current[Key.LeftAlt].isPressed || Keyboard.current[Key.RightAlt].isPressed;
+        }
+
+        public bool IsHoldingCtrl()
+        {
+            return Keyboard.current[Key.LeftCtrl].isPressed || Keyboard.current[Key.RightCtrl].isPressed;
+        }
+
+        public bool IsZoomingIn(WheelSensitivityFactor sensitivityFactor = WheelSensitivityFactor.Medium)
+        {
+            float mouseZoomValue = m_MouseZoomAction.ReadValue<float>();
+            return mouseZoomValue < -GetZoomFactor(sensitivityFactor);
+        }
+
+        public bool IsZoomingOut(WheelSensitivityFactor sensitivityFactor = WheelSensitivityFactor.Medium)
+        {
+            float mouseZoomValue = m_MouseZoomAction.ReadValue<float>();
+            return mouseZoomValue > GetZoomFactor(sensitivityFactor);
+        }
+
+        private static float GetZoomFactor(WheelSensitivityFactor factor)
+        {
+            return factor switch
+            {
+                WheelSensitivityFactor.Low => 0.02f,
+                WheelSensitivityFactor.High => 0.008f,
+                _ => 0.013f,
+
+            };
+        }
     }
 }

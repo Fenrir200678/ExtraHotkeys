@@ -32,14 +32,16 @@ namespace ExtraHotkeys
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableMod)), "Enable mod" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableMod)), "Enable or disable the mod" },
 
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings of the mod" },
+
+
+                // Tool related translations
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableElevationScroll)), "Enable elevation scroll" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableElevationScroll)), "[TODO] Enable to set elevation via mouse scroll wheel." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableUpdateElevationSteps)), "Enable elevation step toggle" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableUpdateElevationSteps)), "Enable to set elevation steps with Alt + right mouse click." },
-
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.ResetBindings)), "Reset all key bindings of the mod" },
 
 
                 // Tool keybinding translations
