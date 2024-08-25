@@ -50,40 +50,14 @@ namespace ExtraHotkeys
 
             try
             {
-                if (ModSettings.EnableMod && _gameManager != null && _gameManager.gameMode == Game.GameMode.Game)
+                if (ModSettings.EnableMod && _gameManager.gameMode == Game.GameMode.Game)
                 {
-                    if (_uiInputManager == null || !_uiInputManager.IsMouseOnScreen())
+                    if (!_uiInputManager.IsMouseOnScreen())
                         return;
-
-                    if (_uiInputManager.IsHoldingAlt())
-                    {
-                        if (_uiInputManager.IsZoomingIn())
-                        {
-                            LogUtil.Info("Zooming in");
-                        }
-
-                        if (_uiInputManager.IsZoomingOut())
-                        {
-                            LogUtil.Info("Zooming out");
-                        }
-                    }
-
-                    if (_uiInputManager.IsHoldingCtrl())
-                    {
-                        if (_uiInputManager.IsZoomingIn())
-                        {
-                            LogUtil.Info("Zooming in");
-                        }
-
-                        if (_uiInputManager.IsZoomingOut())
-                        {
-                            LogUtil.Info("Zooming out");
-                        }
-                    }
-
 
                     _toolWindowManager?.CheckHotkeys();
                     _toolModeManager?.CheckHotkeys();
+                    _toolModeManager?.CheckScrollWheel();
                     _toolSnapOptionsManager?.CheckHotkeys();
                 }
             }

@@ -11,7 +11,6 @@ namespace ExtraHotkeys
         private readonly View _uiView;
         private readonly UIInputManager _uiInputManager;
         private readonly ModSettings _modSettings;
-        private readonly ToolBaseSystem _toolBaseSystem;
         private readonly ToolSystem _toolSystem;
         private readonly NetToolSystem _netToolSystem;
         private readonly ZoneToolSystem _zoneToolSystem;
@@ -21,19 +20,17 @@ namespace ExtraHotkeys
             View uiView,
             UIInputManager uiInputManager,
             ModSettings modSettings,
-            ToolBaseSystem toolBaseSystem,
-            ToolSystem m_toolSystem,
-            NetToolSystem m_netToolSystem,
-            ZoneToolSystem m_zoneToolSystem
-            )
+            ToolSystem toolSystem,
+            NetToolSystem netToolSystem,
+            ZoneToolSystem zoneToolSystem
+        )
         {
             _uiView = uiView;
             _uiInputManager = uiInputManager;
-            _toolSystem = m_toolSystem;
             _modSettings = modSettings;
-            _toolBaseSystem = toolBaseSystem;
-            _netToolSystem = m_netToolSystem;
-            _zoneToolSystem = m_zoneToolSystem;
+            _toolSystem = toolSystem;
+            _netToolSystem = netToolSystem;
+            _zoneToolSystem = zoneToolSystem;
             _toolModeBindings = new List<(ProxyAction, string)>();
 
             InitializeBindings();
@@ -49,7 +46,6 @@ namespace ExtraHotkeys
             RegisterKeybinding(nameof(_modSettings.ToolMode4_Keybinding), "Continuous");
             RegisterKeybinding(nameof(_modSettings.ToolMode5_Keybinding), "Grid");
             RegisterKeybinding(nameof(_modSettings.ToolMode6_Keybinding), "Replace");
-
             RegisterKeybinding(nameof(_modSettings.UpdateElevationStep), "UpdateElevation");
         }
 
@@ -77,17 +73,54 @@ namespace ExtraHotkeys
             }
         }
 
+        public void CheckScrollWheel()
+        {
+            if (!_uiInputManager.IsHoldingCtrl() || !(_toolSystem.activeTool is NetToolSystem))
+            {
+                _uiInputManager.DisableCameraZoom(false);
+                return;
+            }
+
+            _uiInputManager.DisableCameraZoom(true);
+
+            if (_uiInputManager.IsZoomingIn())
+            {
+                CycleNetToolMode(true);
+            }
+            else if (_uiInputManager.IsZoomingOut())
+            {
+                CycleNetToolMode(false);
+            }
+        }
+
+        private void CycleNetToolMode(bool forward)
+        {
+            NetToolSystem.Mode newMode;
+            if (forward)
+            {
+                newMode = _netToolSystem.mode == NetToolSystem.Mode.Replace ? 
+                    NetToolSystem.Mode.Straight : (NetToolSystem.Mode)((int)_netToolSystem.mode + 1);
+            }
+            else
+            {
+                newMode = _netToolSystem.mode == NetToolSystem.Mode.Straight ? 
+                    NetToolSystem.Mode.Replace : (NetToolSystem.Mode)((int)_netToolSystem.mode - 1);
+            }
+
+            _netToolSystem.mode = newMode;
+            _uiView.TriggerEvent("tool.selectToolMode", (int)newMode);
+            PlayUISound("select-item");
+        }
+
         private void SetToolMode(string toolMode)
         {
             if (_toolSystem.activeTool is NetToolSystem netTool)
             {
-                string _toolMode = GetToolModeString(toolMode);
-                SetNetToolMode(netTool, _toolMode);
+                SetNetToolMode(netTool, GetToolModeString(toolMode));
             }
             else if (_toolSystem.activeTool is ZoneToolSystem zoneTool)
             {
-                string _toolMode = GetToolModeString(toolMode, 1);
-                SetZoneToolMode(zoneTool, _toolMode);
+                SetZoneToolMode(zoneTool, GetToolModeString(toolMode, 1));
             }
         }
 
@@ -119,26 +152,22 @@ namespace ExtraHotkeys
 
         private void SetElevationStep()
         {
-            if (_modSettings.EnableUpdateElevationSteps)
+            if (_modSettings.EnableUpdateElevationSteps && _toolSystem.activeTool is NetToolSystem)
             {
-                if (_toolSystem.activeTool is not NetToolSystem)
-                    return;
-
                 float newElevation = _netToolSystem.elevationStep / 2.0f;
                 newElevation = newElevation < 1.25f ? 10f : newElevation;
-
                 _uiView.TriggerEvent("tool.setElevationStep", newElevation);
             }
         }
 
         private static string GetToolModeString(string toolMode, int index = 0)
         {
-            if (toolMode.Contains("|"))
-            {
-                string[] modes = toolMode.Split('|');
-                return modes[index];
-            }
-            return toolMode;
+            return toolMode.Contains("|") ? toolMode.Split('|')[index] : toolMode;
+        }
+
+        private void PlayUISound(string soundName)
+        {
+            _uiView.TriggerEvent("audio.playSound", soundName, 1);
         }
     }
 }

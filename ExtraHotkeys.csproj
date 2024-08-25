@@ -92,10 +92,10 @@
 		<None Include="ModAssemblyInfo\ModAssemblyInfo.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="README.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Update="README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 	<!-- Automatically build PublishConfiguration.xml file. -->

@@ -1,4 +1,8 @@
-﻿using Game.Input;
+﻿using Game;
+using Game.Audio;
+using Game.Input;
+using Game.Prefabs;
+using Unity.Entities;
 using UnityEngine.InputSystem;
 
 namespace ExtraHotkeys
@@ -7,10 +11,13 @@ namespace ExtraHotkeys
     {
         private readonly InputManager _gameInputManager;
         private readonly ModSettings _modSettings;
+
         private readonly ProxyAction m_MouseZoomAction;
         protected readonly ProxyActionMap m_CameraMap;
 
-        protected bool m_IsInProgress;
+        private CameraController m_CameraController;
+
+        public bool m_IsInProgress;
         public bool IsActive => m_IsInProgress;
 
         public enum WheelSensitivityFactor
@@ -31,6 +38,8 @@ namespace ExtraHotkeys
             m_CameraMap = _gameInputManager.FindActionMap("Camera");
             m_MouseZoomAction = m_CameraMap.FindAction("Zoom Mouse");
 
+            m_IsInProgress = false;
+
             LogUtil.Info($"{nameof(UIInputManager)} initialized");
         }
 
@@ -39,6 +48,16 @@ namespace ExtraHotkeys
             var binding = _modSettings.GetAction(settingName);
             binding.shouldBeEnabled = true;
             return binding;
+        }
+
+        public void DisableCameraZoom(bool isDisabled)
+        {
+            if (m_CameraController == null && CameraController.TryGet(out CameraController cameraController))
+            {
+                m_CameraController = cameraController;
+            }
+
+            m_CameraController.inputEnabled = !isDisabled;
         }
 
         public bool IsMouseOnScreen()
