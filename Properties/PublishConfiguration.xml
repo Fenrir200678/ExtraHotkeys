@@ -15,9 +15,10 @@
     <!-- Long description of the mod.  Copied from ReadMe.md file.  Supports minimal markdown subset. -->
     <LongDescription>
 # ExtraHotkeys
-A mod for Cities: Skylines 2 that adds extra hotkeys to the game that should have been there in the first place.
+A mod for Cities: Skylines 2 that adds extra hotkeys and quality of life improvements to the game that should have been there in the first place.
 
-## Changelog
+## Changelog+
+- **v1.0.0** - Added scrollwheel support for various quality of life improvements like controlling the road elevation, brush size and -strength in the terrain tool, etc.
 - **v0.2.0** - Added hotkeys for tool modes and snapping options.
 - **v0.1.0** - Initial release.
 
@@ -25,18 +26,18 @@ A mod for Cities: Skylines 2 that adds extra hotkeys to the game that should hav
 - Adds hotkeys for opening tool windows (like road, zoning, etc.).
 - Adds hotkeys for selecting tool modes and snapping options.
 - All hotkeys can be customized in the game options menu.
+- Adds scrollwheel support for various quality of life improvements like controlling the road elevation, brush size and -strength in the terrain tool, etc.
 
 ## Instructions
 - Install the mod from the Paradox Mods website, Skyve or the in-game mod browser.
 - Go to the options menu in the game.
 - Click on the "Extra Hotkeys" tab.
 - Customize the hotkeys to your liking.
+- Check the settings in the "General" tab to enable the scrollwheel support options. The description should explain what each option does.
 
 ## Todo
 - Add language support. Currently, only English is supported.
-- Add mouse wheel support for quick selection of toolmodes (like in the discontinued mod "ExtendedHotkeys").
 - Add more hotkeys (suggestions are welcome).
-- Various quality of life improvements.
 
 ## Credits
 - This mod is inspired by the discontinued mod "ExtendedHotkeys" by [89pleasure](https://github.com/89pleasure).
@@ -60,7 +61,9 @@ Of course, this is totally optional!
     <Thumbnail Value="Properties/Thumbnail.png" />
 
     <!-- Screenshot.  Copied from Screenshots folder.  Include no spaces in file names.  Max file size is 2.1MB.  Can be set multiple times. -->
-    <Screenshot Value="Properties\Screenshots\10-options_menu.png" />
+    <Screenshot Value="Properties\Screenshots\10-open_tool_windows.png" />
+    <Screenshot Value="Properties\Screenshots\20-set_tool_modes.png" />
+    <Screenshot Value="Properties\Screenshots\30-quality_of_live_settings.png" />
 
 
     <!-- Tag.  Can be set multiple times. -->
@@ -70,16 +73,14 @@ Of course, this is totally optional!
     <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/extra-hotkeys.1700331/" />
 
     <!-- Version of the mod.  Copied from assembly Version. -->
-    <ModVersion Value="0.2.0" />
+    <ModVersion Value="1.0.0" />
 
     <!-- Recommended version of the base game to use the mod. -->
     <GameVersion Value="1.*" />
 
     <!-- Change log.  Copied from ChangeLog.md file.  Supports minimal markdown subset. -->
     <ChangeLog>
-- Added hotkeys for tool modes
-- Added hotkeys for snapping options
-- Refactorings, bug fixes, and code cleanup
+- Added scrollwheel support for various quality of life settings (see options -> general tab)
 </ChangeLog>
 
     <!-- External links. Supported types are discord, github, youtube, twitch, x, paypal, patreon.  Can be set multiple times. -->

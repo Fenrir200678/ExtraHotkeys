@@ -10,7 +10,7 @@
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
 		<Title>Extra Hotkeys</Title>
-		<Version>0.2.0</Version>
+		<Version>1.0.0</Version>
 		<Description>This mod adds extra hotkeys to the game that should have been there by default.</Description>
 		<Copyright>Copyright © 2024</Copyright>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>

@@ -1,3 +1,1 @@
-﻿- Added hotkeys for tool modes
-- Added hotkeys for snapping options
-- Refactorings, bug fixes, and code cleanup
+﻿- Added scrollwheel support for various quality of life settings (see options -> general tab)

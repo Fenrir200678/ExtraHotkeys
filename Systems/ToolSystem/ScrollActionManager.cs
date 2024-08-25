@@ -65,12 +65,12 @@ namespace ExtraHotkeys
             if (_uiInputManager.IsHoldingCtrl())
             {
                 _uiInputManager.DisableCameraZoom(true);
-                OnBrushSizeScroll(); // todo
+                OnBrushSizeScroll();
             }
             else if (_uiInputManager.IsHoldingAlt())
             {
                 _uiInputManager.DisableCameraZoom(true);
-                OnBrushStrengthScroll(); // todo
+                OnBrushStrengthScroll();
             }
             else
             {

@@ -1,7 +1,8 @@
 # ExtraHotkeys
-A mod for Cities: Skylines 2 that adds extra hotkeys to the game that should have been there in the first place.
+A mod for Cities: Skylines 2 that adds extra hotkeys and quality of life improvements to the game that should have been there in the first place.
 
-## Changelog
+## Changelog+
+- **v1.0.0** - Added scrollwheel support for various quality of life improvements like controlling the road elevation, brush size and -strength in the terrain tool, etc.
 - **v0.2.0** - Added hotkeys for tool modes and snapping options.
 - **v0.1.0** - Initial release.
 
@@ -9,18 +10,18 @@ A mod for Cities: Skylines 2 that adds extra hotkeys to the game that should hav
 - Adds hotkeys for opening tool windows (like road, zoning, etc.).
 - Adds hotkeys for selecting tool modes and snapping options.
 - All hotkeys can be customized in the game options menu.
+- Adds scrollwheel support for various quality of life improvements like controlling the road elevation, brush size and -strength in the terrain tool, etc.
 
 ## Instructions
 - Install the mod from the Paradox Mods website, Skyve or the in-game mod browser.
 - Go to the options menu in the game.
 - Click on the "Extra Hotkeys" tab.
 - Customize the hotkeys to your liking.
+- Check the settings in the "General" tab to enable the scrollwheel support options. The description should explain what each option does.
 
 ## Todo
 - Add language support. Currently, only English is supported.
-- Add mouse wheel support for quick selection of toolmodes (like in the discontinued mod "ExtendedHotkeys").
 - Add more hotkeys (suggestions are welcome).
-- Various quality of life improvements.
 
 ## Credits
 - This mod is inspired by the discontinued mod "ExtendedHotkeys" by [89pleasure](https://github.com/89pleasure).
