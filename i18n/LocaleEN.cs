@@ -19,12 +19,12 @@ namespace ExtraHotkeys
                 { m_Setting.GetOptionTabLocaleID(ModSettings.sGeneral), "General" },
                 { m_Setting.GetOptionTabLocaleID(ModSettings.sToolKeybindings), "Tool Keybindings" },
 
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.gOpenToolsKeybindings), "Open Tools Keybindings" },
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolModeKeybindings), "Tool Mode Keybindings" },
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.gSnappingKeybindings), "Snapping Options" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gOpenToolsKeybindings), "Open Tool Windows" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolModeKeybindings), "Set Tool Modes" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gSnappingKeybindings), "Set Snapping Options" },
 
                 { m_Setting.GetOptionGroupLocaleID(ModSettings.gGeneral), "General Settings" },
-                { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolRelated), "Tool Related Settings" },
+                { m_Setting.GetOptionGroupLocaleID(ModSettings.gToolRelated), "Quality Of Life Settings" },
                 { m_Setting.GetOptionGroupLocaleID(ModSettings.gAbout), "About Mod" },
 
 
@@ -38,10 +38,19 @@ namespace ExtraHotkeys
 
                 // Tool related translations
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableElevationScroll)), "Enable elevation scroll" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableElevationScroll)), "[TODO] Enable to set elevation via mouse scroll wheel." },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableElevationScroll)), "Enable to set elevation via Ctrl + scroll wheel." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableUpdateElevationSteps)), "Enable elevation step toggle" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableUpdateElevationSteps)), "Enable to set elevation steps with Alt + right mouse click." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableElevationStepScroll)), "Enable elevation steps scroll" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableElevationStepScroll)), "Enable to set elevation steps via Alt + scroll wheel." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableResetElevation)), "Enable elevation reset" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableResetElevation)), "Enable to reset elevation with Ctrl + right mouse click." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableBrushSizeScroll)), "Enable brush-size scroll" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableBrushSizeScroll)), "Enable to set brush-size via Ctrl + scroll wheel in terrain tool." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableBrushStrenghScroll)), "Enable brush-strenght scroll" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableBrushStrenghScroll)), "Enable to set brush-strenght via Alt + scroll wheel in terrain tool." },
 
 
                 // Tool keybinding translations

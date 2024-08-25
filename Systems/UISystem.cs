@@ -19,12 +19,14 @@ namespace ExtraHotkeys
         private ToolSystem m_toolSystem;
         private NetToolSystem m_netToolSystem;
         private ZoneToolSystem m_zoneToolSystem;
+        private TerrainToolSystem m_terrainToolSystem;
         private GameScreenUISystem m_gameScreenUISystem;
 
         private UIInputManager _uiInputManager;
         private ToolWindowManager _toolWindowManager;
         private ToolModeManager _toolModeManager;
         private ToolSnapOptionsManager _toolSnapOptionsManager;
+        private ScrollActionManager _scrollActionManager;
 
         private GameManager _gameManager;
 
@@ -57,8 +59,8 @@ namespace ExtraHotkeys
 
                     _toolWindowManager?.CheckHotkeys();
                     _toolModeManager?.CheckHotkeys();
-                    _toolModeManager?.CheckScrollWheel();
                     _toolSnapOptionsManager?.CheckHotkeys();
+                    _scrollActionManager?.CheckScrollWheelActions();
                 }
             }
             catch (Exception ex)
@@ -79,6 +81,7 @@ namespace ExtraHotkeys
             m_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_netToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
             m_zoneToolSystem = World.GetOrCreateSystemManaged<ZoneToolSystem>();
+            m_terrainToolSystem = World.GetOrCreateSystemManaged<TerrainToolSystem>();
             m_gameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
 
             _uiInputManager = new UIInputManager(
@@ -97,7 +100,6 @@ namespace ExtraHotkeys
                 _uiView,
                 _uiInputManager,
                 ModSettings,
-                m_ToolBaseSystem,
                 m_toolSystem,
                 m_netToolSystem,
                 m_zoneToolSystem
@@ -108,6 +110,15 @@ namespace ExtraHotkeys
                 _uiInputManager,
                 ModSettings,
                 m_netToolSystem
+                );
+
+            _scrollActionManager = new ScrollActionManager(
+                _uiView,
+                _uiInputManager,
+                ModSettings,
+                m_toolSystem,
+                m_netToolSystem,
+                m_terrainToolSystem
                 );
         }
 

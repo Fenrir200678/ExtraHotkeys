@@ -202,18 +202,31 @@ namespace ExtraHotkeys
         }
 
         // Tool related settings
-        // Enable elevation scroll
+        // Enable elevation scroll (Ctrl + scroll wheel)
         [SettingsUISection(sGeneral, gToolRelated)]
-        public bool EnableElevationScroll { get; set; } = true;
+        public bool EnableElevationScroll { get; set; } = false;
 
-        // Enable update elevation steps
+        // Enable elevation steps (Alt + scroll wheel)
         [SettingsUISection(sGeneral, gToolRelated)]
-        public bool EnableUpdateElevationSteps { get; set; } = true;
+        public bool EnableElevationStepScroll { get; set; } = false;
+
+        // Enable reset elevation (Alt + right click)
+        [SettingsUISection(sGeneral, gToolRelated)]
+        public bool EnableResetElevation { get; set; } = false;
 
         // Hidden elevation scroll key bindings
-        [SettingsUIMouseBinding(BindingMouse.Right, nameof(UpdateElevationStep), alt: true)]
+        [SettingsUIMouseBinding(BindingMouse.Right, nameof(ResetElevation), ctrl: true)]
         [SettingsUIHidden]
-        public ProxyBinding UpdateElevationStep { get; set; }
+        public ProxyBinding ResetElevation { get; set; }
+
+        // Enable brush size scroll (Crtl + scroll wheel)
+        [SettingsUISection(sGeneral, gToolRelated)]
+        public bool EnableBrushSizeScroll { get; set; } = false;
+
+        // Enable brush strengh scroll (Alt + scroll wheel)
+        [SettingsUISection(sGeneral, gToolRelated)]
+        public bool EnableBrushStrenghScroll { get; set; } = false;
+
 
 
         // About mod

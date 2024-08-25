@@ -68,6 +68,7 @@ namespace ExtraHotkeys
                 if (binding.WasPerformedThisFrame())
                 {
                     _uiView.TriggerEvent("toolbar.selectAssetMenu", GetAssetMenuObject(toolName));
+                    PlayUISound("open-panel");
                 }
             }
         }
@@ -100,6 +101,16 @@ namespace ExtraHotkeys
                 index = menuEntity.Index,
                 version = menuEntity.Version
             };
+        }
+
+        public void PlayUISound(string soundName)
+        {
+            // open-panel
+            // select-item
+            // increase-elevation
+            // decrease-elevation
+
+            _uiView.TriggerEvent("audio.playSound", soundName, 1);
         }
     }
 }

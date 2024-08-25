@@ -1,8 +1,5 @@
 ﻿using Game;
-using Game.Audio;
 using Game.Input;
-using Game.Prefabs;
-using Unity.Entities;
 using UnityEngine.InputSystem;
 
 namespace ExtraHotkeys

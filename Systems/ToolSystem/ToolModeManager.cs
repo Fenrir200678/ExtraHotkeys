@@ -20,17 +20,17 @@ namespace ExtraHotkeys
             View uiView,
             UIInputManager uiInputManager,
             ModSettings modSettings,
-            ToolSystem toolSystem,
-            NetToolSystem netToolSystem,
-            ZoneToolSystem zoneToolSystem
-        )
+            ToolSystem m_toolSystem,
+            NetToolSystem m_netToolSystem,
+            ZoneToolSystem m_zoneToolSystem
+            )
         {
             _uiView = uiView;
             _uiInputManager = uiInputManager;
+            _toolSystem = m_toolSystem;
             _modSettings = modSettings;
-            _toolSystem = toolSystem;
-            _netToolSystem = netToolSystem;
-            _zoneToolSystem = zoneToolSystem;
+            _netToolSystem = m_netToolSystem;
+            _zoneToolSystem = m_zoneToolSystem;
             _toolModeBindings = new List<(ProxyAction, string)>();
 
             InitializeBindings();
@@ -46,7 +46,8 @@ namespace ExtraHotkeys
             RegisterKeybinding(nameof(_modSettings.ToolMode4_Keybinding), "Continuous");
             RegisterKeybinding(nameof(_modSettings.ToolMode5_Keybinding), "Grid");
             RegisterKeybinding(nameof(_modSettings.ToolMode6_Keybinding), "Replace");
-            RegisterKeybinding(nameof(_modSettings.UpdateElevationStep), "UpdateElevation");
+
+            RegisterKeybinding(nameof(_modSettings.ResetElevation), "ResetElevation");
         }
 
         private void RegisterKeybinding(string settingName, string toolMode)
@@ -61,9 +62,9 @@ namespace ExtraHotkeys
             {
                 if (binding.WasPerformedThisFrame())
                 {
-                    if (toolMode == "UpdateElevation")
+                    if (toolMode == "ResetElevation")
                     {
-                        SetElevationStep();
+                        ResetElevation();
                     }
                     else
                     {
@@ -73,54 +74,17 @@ namespace ExtraHotkeys
             }
         }
 
-        public void CheckScrollWheel()
-        {
-            if (!_uiInputManager.IsHoldingCtrl() || !(_toolSystem.activeTool is NetToolSystem))
-            {
-                _uiInputManager.DisableCameraZoom(false);
-                return;
-            }
-
-            _uiInputManager.DisableCameraZoom(true);
-
-            if (_uiInputManager.IsZoomingIn())
-            {
-                CycleNetToolMode(true);
-            }
-            else if (_uiInputManager.IsZoomingOut())
-            {
-                CycleNetToolMode(false);
-            }
-        }
-
-        private void CycleNetToolMode(bool forward)
-        {
-            NetToolSystem.Mode newMode;
-            if (forward)
-            {
-                newMode = _netToolSystem.mode == NetToolSystem.Mode.Replace ? 
-                    NetToolSystem.Mode.Straight : (NetToolSystem.Mode)((int)_netToolSystem.mode + 1);
-            }
-            else
-            {
-                newMode = _netToolSystem.mode == NetToolSystem.Mode.Straight ? 
-                    NetToolSystem.Mode.Replace : (NetToolSystem.Mode)((int)_netToolSystem.mode - 1);
-            }
-
-            _netToolSystem.mode = newMode;
-            _uiView.TriggerEvent("tool.selectToolMode", (int)newMode);
-            PlayUISound("select-item");
-        }
-
         private void SetToolMode(string toolMode)
         {
             if (_toolSystem.activeTool is NetToolSystem netTool)
             {
-                SetNetToolMode(netTool, GetToolModeString(toolMode));
+                string _toolMode = GetToolModeString(toolMode);
+                SetNetToolMode(netTool, _toolMode);
             }
             else if (_toolSystem.activeTool is ZoneToolSystem zoneTool)
             {
-                SetZoneToolMode(zoneTool, GetToolModeString(toolMode, 1));
+                string _toolMode = GetToolModeString(toolMode, 1);
+                SetZoneToolMode(zoneTool, _toolMode);
             }
         }
 
@@ -128,8 +92,8 @@ namespace ExtraHotkeys
         {
             if (Enum.TryParse<NetToolSystem.Mode>(modeName, out var mode))
             {
-                tool.mode = mode;
                 _uiView.TriggerEvent("tool.selectToolMode", (int)mode);
+                PlayUISound("select-item");
             }
             else
             {
@@ -141,8 +105,8 @@ namespace ExtraHotkeys
         {
             if (Enum.TryParse<ZoneToolSystem.Mode>(modeName, out var mode))
             {
-                tool.mode = mode;
                 _uiView.TriggerEvent("tool.selectToolMode", (int)mode);
+                PlayUISound("select-item");
             }
             else
             {
@@ -150,23 +114,32 @@ namespace ExtraHotkeys
             }
         }
 
-        private void SetElevationStep()
+        private void ResetElevation()
         {
-            if (_modSettings.EnableUpdateElevationSteps && _toolSystem.activeTool is NetToolSystem)
+            if (_modSettings.EnableResetElevation && _toolSystem.activeTool is NetToolSystem)
             {
-                float newElevation = _netToolSystem.elevationStep / 2.0f;
-                newElevation = newElevation < 1.25f ? 10f : newElevation;
-                _uiView.TriggerEvent("tool.setElevationStep", newElevation);
+                _netToolSystem.elevation = 0f;
+                PlayUISound("select-item");
             }
         }
 
         private static string GetToolModeString(string toolMode, int index = 0)
         {
-            return toolMode.Contains("|") ? toolMode.Split('|')[index] : toolMode;
+            if (toolMode.Contains("|"))
+            {
+                string[] modes = toolMode.Split('|');
+                return modes[index];
+            }
+            return toolMode;
         }
 
-        private void PlayUISound(string soundName)
+        public void PlayUISound(string soundName)
         {
+            // open-panel
+            // select-item (tool mode select & set elevation step)
+            // increase-elevation
+            // decrease-elevation
+
             _uiView.TriggerEvent("audio.playSound", soundName, 1);
         }
     }
