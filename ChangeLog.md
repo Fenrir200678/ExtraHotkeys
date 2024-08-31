@@ -1,1 +1,2 @@
-﻿- Added scrollwheel support for various quality of life settings (see options -> general tab)
+﻿- Potential bugfix for freezing keyboard when playing in windowed mode
+- Some refactoring and cleanup of the codebase

@@ -2,9 +2,15 @@
 A mod for Cities: Skylines 2 that adds extra hotkeys and quality of life improvements to the game that should have been there in the first place.
 
 ## Changelog+
-- **v1.0.0** - Added scrollwheel support for various quality of life improvements like controlling the road elevation, brush size and -strength in the terrain tool, etc.
-- **v0.2.0** - Added hotkeys for tool modes and snapping options.
-- **v0.1.0** - Initial release.
+* **v1.0.1**
+  * Potential bugfix for freezing keyboard when playing in windowed mode
+  * Some refactoring and cleanup of the codebase
+* **v1.0.0** 		
+  * Added scrollwheel support for various quality of life improvements like controlling the road elevation, brush size and -strength in the terrain tool, etc.
+* **v0.2.0**
+  * Added hotkeys for tool modes and snapping options.
+* **v0.1.0**
+  * Initial release.
 
 ## Features
 - Adds hotkeys for opening tool windows (like road, zoning, etc.).

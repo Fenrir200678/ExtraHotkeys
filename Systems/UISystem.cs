@@ -55,7 +55,7 @@ namespace ExtraHotkeys
                 if (ModSettings.EnableMod && _gameManager.gameMode == Game.GameMode.Game)
                 {
                     if (!_uiInputManager.IsMouseOnScreen())
-                        return;
+                        _uiInputManager.DisableCameraZoom(false);
 
                     _toolWindowManager?.CheckHotkeys();
                     _toolModeManager?.CheckHotkeys();
@@ -113,7 +113,6 @@ namespace ExtraHotkeys
                 );
 
             _scrollActionManager = new ScrollActionManager(
-                _uiView,
                 _uiInputManager,
                 ModSettings,
                 m_toolSystem,
