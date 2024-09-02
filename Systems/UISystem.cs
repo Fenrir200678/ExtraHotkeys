@@ -20,6 +20,7 @@ namespace ExtraHotkeys
         private NetToolSystem m_netToolSystem;
         private ZoneToolSystem m_zoneToolSystem;
         private TerrainToolSystem m_terrainToolSystem;
+        private ObjectToolSystem m_objectToolSystem;
         private GameScreenUISystem m_gameScreenUISystem;
 
         private UIInputManager _uiInputManager;
@@ -82,6 +83,7 @@ namespace ExtraHotkeys
             m_netToolSystem = World.GetOrCreateSystemManaged<NetToolSystem>();
             m_zoneToolSystem = World.GetOrCreateSystemManaged<ZoneToolSystem>();
             m_terrainToolSystem = World.GetOrCreateSystemManaged<TerrainToolSystem>();
+            m_objectToolSystem = World.GetOrCreateSystemManaged<ObjectToolSystem>();
             m_gameScreenUISystem = World.GetOrCreateSystemManaged<GameScreenUISystem>();
 
             _uiInputManager = new UIInputManager(
@@ -117,7 +119,8 @@ namespace ExtraHotkeys
                 ModSettings,
                 m_toolSystem,
                 m_netToolSystem,
-                m_terrainToolSystem
+                m_terrainToolSystem,
+                m_objectToolSystem
                 );
         }
 

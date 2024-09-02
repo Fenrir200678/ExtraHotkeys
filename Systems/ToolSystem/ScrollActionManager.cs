@@ -11,13 +11,15 @@ namespace ExtraHotkeys
         private readonly TerrainToolSystem _terrainToolSystem;
         private readonly BrushManager _brushManager;
         private readonly ElevationManager _elevationManager;
+        private readonly ObjectToolSystem _objectToolSystem;
 
         public ScrollActionManager(
             UIInputManager uiInputManager,
             ModSettings modSettings,
             ToolSystem m_toolSystem,
             NetToolSystem m_netToolSystem,
-            TerrainToolSystem m_terrainToolSystem
+            TerrainToolSystem m_terrainToolSystem,
+            ObjectToolSystem m_objectToolSystem
             )
         {
             _uiInputManager = uiInputManager;
@@ -25,7 +27,8 @@ namespace ExtraHotkeys
             _toolSystem = m_toolSystem;
             _netToolSystem = m_netToolSystem;
             _terrainToolSystem = m_terrainToolSystem;
-            _brushManager = new BrushManager(modSettings, uiInputManager, m_terrainToolSystem);
+            _objectToolSystem = m_objectToolSystem;
+            _brushManager = new BrushManager(modSettings, uiInputManager, m_terrainToolSystem, m_objectToolSystem, m_toolSystem);
             _elevationManager = new ElevationManager(modSettings, uiInputManager, m_netToolSystem);
 
             LogUtil.Info($"{nameof(ScrollActionManager)} initialized");
@@ -35,8 +38,8 @@ namespace ExtraHotkeys
         {
             if (_toolSystem.activeTool is NetToolSystem)
                 HandleNetToolScrollActions();
-            else if (_toolSystem.activeTool is TerrainToolSystem)
-                HandleTerrainToolScrollActions();
+            else if (_toolSystem.activeTool is TerrainToolSystem || _toolSystem.activeTool is ObjectToolSystem)
+                HandleBrushToolScrollActions();
         }
 
         private void HandleNetToolScrollActions()
@@ -57,7 +60,7 @@ namespace ExtraHotkeys
             }
         }
 
-        private void HandleTerrainToolScrollActions()
+        private void HandleBrushToolScrollActions()
         {
             if (_uiInputManager.IsHoldingCtrl())
             {

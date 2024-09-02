@@ -49,8 +49,8 @@ namespace ExtraHotkeys
                 { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableBrushSizeScroll)), "Enable brush-size scroll" },
                 { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableBrushSizeScroll)), "Enable to set brush-size via Ctrl + scroll wheel in terrain tool." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableBrushStrenghScroll)), "Enable brush-strenght scroll" },
-                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableBrushStrenghScroll)), "Enable to set brush-strenght via Alt + scroll wheel in terrain tool." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(ModSettings.EnableBrushStrengthScroll)), "Enable brush-strength scroll" },
+                { m_Setting.GetOptionDescLocaleID(nameof(ModSettings.EnableBrushStrengthScroll)), "Enable to set brush-strength via Alt + scroll wheel in terrain tool." },
 
 
                 // Tool keybinding translations

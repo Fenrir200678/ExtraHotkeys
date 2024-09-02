@@ -10,7 +10,7 @@ namespace ExtraHotkeys
     public class ModAssemblyInfo
     {
         public const string Name        = "ExtraHotkeys";
-        public const string Version     = "1.0.1";
+        public const string Version     = "1.0.2";
         public const string Title       = "Extra Hotkeys";
         public const string Description = "This mod adds extra hotkeys to the game that should have been there by default.";
     }

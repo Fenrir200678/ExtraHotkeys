@@ -2,6 +2,9 @@
 A mod for Cities: Skylines 2 that adds extra hotkeys and quality of life improvements to the game that should have been there in the first place.
 
 ## Changelog+
+* **V1.0.2.**
+	* Added brush size and strength scrollwheel actions for tree brush
+	* Fixed minor typo in the settings menu
 * **v1.0.1**
   * Potential bugfix for freezing keyboard when playing in windowed mode
   * Some refactoring and cleanup of the codebase

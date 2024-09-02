@@ -225,7 +225,7 @@ namespace ExtraHotkeys
 
         // Enable brush strengh scroll (Alt + scroll wheel)
         [SettingsUISection(sGeneral, gToolRelated)]
-        public bool EnableBrushStrenghScroll { get; set; } = false;
+        public bool EnableBrushStrengthScroll { get; set; } = false;
 
 
 

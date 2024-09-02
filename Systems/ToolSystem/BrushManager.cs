@@ -15,13 +15,17 @@ namespace ExtraHotkeys
         private readonly ModSettings _modSettings;
         private readonly UIInputManager _uiInputManager;
         private readonly TerrainToolSystem _terrainToolSystem;
+        private readonly ObjectToolSystem _objectToolSystem;
+        private readonly ToolSystem _toolSystem;
         private readonly View _uiView;
 
-        public BrushManager(ModSettings modSettings, UIInputManager uiInputManager, TerrainToolSystem terrainToolSystem)
+        public BrushManager(ModSettings modSettings, UIInputManager uiInputManager, TerrainToolSystem terrainToolSystem, ObjectToolSystem objectToolSystem, ToolSystem toolSystem)
         {
             _modSettings = modSettings;
             _uiInputManager = uiInputManager;
             _terrainToolSystem = terrainToolSystem;
+            _objectToolSystem = objectToolSystem;
+            _toolSystem = toolSystem;
             _uiView = GameManager.instance.userInterface.view.View;
         }
 
@@ -41,7 +45,7 @@ namespace ExtraHotkeys
 
         public void OnBrushStrengthScroll()
         {
-            if (!_modSettings.EnableBrushStrenghScroll) return;
+            if (!_modSettings.EnableBrushStrengthScroll) return;
 
             if (_uiInputManager.IsZoomingIn())
             {
@@ -55,15 +59,19 @@ namespace ExtraHotkeys
 
         private void IncreaseBrushSize()
         {
-            float increment = GetBrushSizeIncrement(_terrainToolSystem.brushSize);
-            _terrainToolSystem.brushSize = Math.Min(_terrainToolSystem.brushSize + increment, MAX_BRUSH_SIZE);
+            float currentSize = GetCurrentBrushSize();
+            float increment = GetBrushSizeIncrement(currentSize);
+            float newSize = Math.Min(currentSize + increment, MAX_BRUSH_SIZE);
+            SetBrushSize(newSize);
             PlayUISound("increase-elevation");
         }
 
         private void DecreaseBrushSize()
         {
-            float decrement = GetBrushSizeIncrement(_terrainToolSystem.brushSize - 1);  // -1 to handle edge cases
-            _terrainToolSystem.brushSize = Math.Max(_terrainToolSystem.brushSize - decrement, MIN_BRUSH_SIZE);
+            float currentSize = GetCurrentBrushSize();
+            float decrement = GetBrushSizeIncrement(currentSize - 1);  // -1 to handle edge cases
+            float newSize = Math.Max(currentSize - decrement, MIN_BRUSH_SIZE);
+            SetBrushSize(newSize);
             PlayUISound("decrease-elevation");
         }
 
@@ -76,15 +84,19 @@ namespace ExtraHotkeys
 
         private void IncreaseBrushStrength()
         {
-            float increment = GetBrushStrengthIncrement(_terrainToolSystem.brushStrength);
-            _terrainToolSystem.brushStrength = Math.Min(_terrainToolSystem.brushStrength + increment, MAX_BRUSH_STRENGTH);
+            float currentStrength = GetCurrentBrushStrength();
+            float increment = GetBrushStrengthIncrement(currentStrength);
+            float newStrength = Math.Min(currentStrength + increment, MAX_BRUSH_STRENGTH);
+            SetBrushStrength(newStrength);
             PlayUISound("increase-elevation");
         }
 
         private void DecreaseBrushStrength()
         {
-            float decrement = GetBrushStrengthDecrement(_terrainToolSystem.brushStrength);
-            _terrainToolSystem.brushStrength = Math.Max(_terrainToolSystem.brushStrength - decrement, MIN_BRUSH_STRENGTH);
+            float currentStrength = GetCurrentBrushStrength();
+            float decrement = GetBrushStrengthDecrement(currentStrength);
+            float newStrength = Math.Max(currentStrength - decrement, MIN_BRUSH_STRENGTH);
+            SetBrushStrength(newStrength);
             PlayUISound("decrease-elevation");
         }
 
@@ -101,13 +113,33 @@ namespace ExtraHotkeys
             return 0.05f;
         }
 
+        private float GetCurrentBrushSize()
+        {
+            return IsTerrainToolActive() ? _terrainToolSystem.brushSize : _objectToolSystem.brushSize;
+        }
+
+        private float GetCurrentBrushStrength()
+        {
+            return IsTerrainToolActive() ? _terrainToolSystem.brushStrength : _objectToolSystem.brushStrength;
+        }
+
+        private void SetBrushSize(float newSize)
+        {
+            _uiView.TriggerEvent("tool.setBrushSize", newSize);
+        }
+
+        private void SetBrushStrength(float newStrength)
+        {
+            _uiView.TriggerEvent("tool.setBrushStrength", newStrength);
+        }
+
+        private bool IsTerrainToolActive()
+        {
+            return _toolSystem.activeTool is TerrainToolSystem;
+        }
+
         private void PlayUISound(string soundName)
         {
-            // open-panel
-            // select-item (tool mode select & set elevation step)
-            // increase-elevation
-            // decrease-elevation
-
             _uiView.TriggerEvent("audio.playSound", soundName, 1);
         }
     }
