@@ -1,2 +1,1 @@
-﻿- Fixed scrollwheel support for the terrain tool brush size and strength. The scrollwheel now works as expected. 
-- Some minor refactoring and cleanup of the codebase.
+﻿- Added default values for settings and improved error handling

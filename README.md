@@ -2,6 +2,8 @@
 A mod for Cities: Skylines 2 that adds extra hotkeys and quality of life improvements to the game that should have been there in the first place.
 
 ## Changelog+
+* **V1.0.4**
+	* Added default values for settings and improved error handling
 * **V1.0.3**
 	* Fixed scrollwheel support for the terrain tool brush size and strength. The scrollwheel now works as expected. 
 	* Some minor refactoring and cleanup of the codebase.

@@ -2,6 +2,8 @@
 using Game.Input;
 using Game.Modding;
 using Game.Settings;
+using System.Linq;
+using System;
 
 namespace ExtraHotkeys
 {
@@ -235,7 +237,28 @@ namespace ExtraHotkeys
 
         public override void SetDefaults()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                EnableMod = true;
+                EnableElevationScroll = false;
+                EnableElevationStepScroll = false;
+                EnableResetElevation = false;
+                EnableBrushSizeScroll = false;
+                EnableBrushStrengthScroll = false;
+
+                // Alle Keybindings auf None setzen
+                var properties = GetType().GetProperties()
+                    .Where(p => p.PropertyType == typeof(ProxyBinding));
+
+                foreach (var property in properties.ToList()) // ToList() um die Collection zu materialisieren
+                {
+                    property.SetValue(this, new ProxyBinding());
+                }
+            }
+            catch (Exception ex)
+            {
+                LogUtil.Error($"Error in SetDefaults: {ex.Message}");
+            }
         }
     }
 }
