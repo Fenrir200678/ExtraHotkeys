@@ -1,5 +1,6 @@
 ﻿using Game;
 using Game.Input;
+using System;
 using UnityEngine.InputSystem;
 
 namespace ExtraHotkeys
@@ -8,35 +9,20 @@ namespace ExtraHotkeys
     {
         private readonly InputManager _gameInputManager;
         private readonly ModSettings _modSettings;
-
-        private readonly ProxyAction m_MouseZoomAction;
-        protected readonly ProxyActionMap m_CameraMap;
-
+        private readonly ProxyActionMap m_CameraMap;
         private CameraController m_CameraController;
-
         public bool m_IsInProgress;
         public bool IsActive => m_IsInProgress;
-
-        public enum WheelSensitivityFactor
-        {
-            Low = 1,
-            Medium = 2,
-            High = 3
-        }
 
         public UIInputManager(
             InputManager gameInputManager,
             ModSettings modSettings
             )
         {
-            _gameInputManager = gameInputManager;
-            _modSettings = modSettings;
-
+            _gameInputManager = gameInputManager ?? throw new ArgumentNullException(nameof(gameInputManager));
+            _modSettings = modSettings ?? throw new ArgumentNullException(nameof(modSettings));
             m_CameraMap = _gameInputManager.FindActionMap("Camera");
-            m_MouseZoomAction = m_CameraMap.FindAction("Zoom Mouse");
-
             m_IsInProgress = false;
-
             LogUtil.Info($"{nameof(UIInputManager)} initialized");
         }
 
@@ -62,42 +48,58 @@ namespace ExtraHotkeys
             return _gameInputManager.mouseOnScreen;
         }
 
-        public bool IsHoldingKey(Key key)
-        {
-            return Keyboard.current[key].isPressed;
-        }
-
         public bool IsHoldingAlt()
         {
-            return Keyboard.current[Key.LeftAlt].isPressed || Keyboard.current[Key.RightAlt].isPressed;
+            try
+            {
+                return Keyboard.current?.altKey?.isPressed == true;
+            }
+            catch (Exception ex)
+            {
+                LogUtil.Exception(ex);
+                return false;
+            }
         }
 
         public bool IsHoldingCtrl()
         {
-            return Keyboard.current[Key.LeftCtrl].isPressed || Keyboard.current[Key.RightCtrl].isPressed;
-        }
-
-        public bool IsZoomingIn(WheelSensitivityFactor sensitivityFactor = WheelSensitivityFactor.Medium)
-        {
-            float mouseZoomValue = m_MouseZoomAction.ReadValue<float>();
-            return mouseZoomValue < -GetZoomFactor(sensitivityFactor);
-        }
-
-        public bool IsZoomingOut(WheelSensitivityFactor sensitivityFactor = WheelSensitivityFactor.Medium)
-        {
-            float mouseZoomValue = m_MouseZoomAction.ReadValue<float>();
-            return mouseZoomValue > GetZoomFactor(sensitivityFactor);
-        }
-
-        private static float GetZoomFactor(WheelSensitivityFactor factor)
-        {
-            return factor switch
+            try
             {
-                WheelSensitivityFactor.Low => 0.02f,
-                WheelSensitivityFactor.High => 0.008f,
-                _ => 0.013f,
+                return Keyboard.current?.ctrlKey?.isPressed == true;
+            }
+            catch (Exception ex)
+            {
+                LogUtil.Exception(ex);
+                return false;
+            }
+        }
 
-            };
+        public bool IsZoomingIn()
+        {
+            try
+            {
+                if (Mouse.current == null) return false;
+                return Mouse.current.scroll.ReadValue().y > 0;
+            }
+            catch (Exception ex)
+            {
+                LogUtil.Error($"Error in IsZoomingIn: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool IsZoomingOut()
+        {
+            try
+            {
+                if (Mouse.current == null) return false;
+                return Mouse.current.scroll.ReadValue().y < 0;
+            }
+            catch (Exception ex)
+            {
+                LogUtil.Error($"Error in IsZoomingOut: {ex.Message}");
+                return false;
+            }
         }
     }
 }

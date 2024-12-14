@@ -1,2 +1,2 @@
-﻿- Added brush size and strength scrollwheel actions for tree brush
-- Fixed minor typo in the settings menu
+﻿- Fixed scrollwheel support for the terrain tool brush size and strength. The scrollwheel now works as expected. 
+- Some minor refactoring and cleanup of the codebase.
